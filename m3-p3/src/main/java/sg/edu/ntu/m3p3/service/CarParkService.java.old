@@ -1,0 +1,14 @@
+
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class CarParkService {
+    private final CarParkRepository carParkRepository;
+
+    public CarParkService(CarParkRepository carParkRepository) {
+        this.carParkRepository = carParkRepository;
+    }
+    
+    // Implement car park-related business logic methods
+}
