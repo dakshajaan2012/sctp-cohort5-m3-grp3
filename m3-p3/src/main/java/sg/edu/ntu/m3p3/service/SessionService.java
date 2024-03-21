@@ -21,7 +21,7 @@ public class SessionService {
     }
 
     public Session createSession(Session session) {
-        // Set isDeleted to false when creating a new session
+
         // session.setDeleted(false);
         return sessionRepository.save(session);
     }
