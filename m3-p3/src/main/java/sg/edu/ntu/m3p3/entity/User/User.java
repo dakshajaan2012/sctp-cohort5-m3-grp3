@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
@@ -39,7 +41,7 @@ public class User {
 
     @NotEmpty
     @Column(name = "email")
-    @Email(message = "Email should be valid")
+    @Email(regexp = ".*@.*\\..*", message = "Email should be valid")
     private String email;
 
     @Column(name = "is_admin")
@@ -51,6 +53,8 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Min(value = 0, message = "loginAttemptCounter must be greater than or equal to 0")
+    @Max(value = 5, message = "loginAttemptCounter must be less than or equal to 5")
     @Column(name = "login_attempt_counter")
     private int loginAttemptCounter;
 
@@ -75,6 +79,13 @@ public class User {
         this.isDeleted = isDeleted;
     }
 
-    
+    public void setLoginAttemptCounter(int i) {
+        // Limit loginAttemptCounter to a maximum value of 5
+        if (i >= 0 && i <= 5) {
+            this.loginAttemptCounter = i;
+        } else {
+            throw new IllegalArgumentException("loginAttemptCounter must be between 0 and 5 inclusive.");
+        }
+    }
 
 }
