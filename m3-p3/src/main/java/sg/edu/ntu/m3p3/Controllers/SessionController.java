@@ -1,4 +1,4 @@
-package sg.edu.ntu.m3p3.controllers;
+package sg.edu.ntu.m3p3.Controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
