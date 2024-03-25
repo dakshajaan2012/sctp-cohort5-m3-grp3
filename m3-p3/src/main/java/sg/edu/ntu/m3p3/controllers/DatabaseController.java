@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,7 +28,7 @@ import java.util.Map;
 
 @RestController
 @Tag(name = "Database", description = "Database APIs")
-@RequestMapping("/database/tables")
+@RequestMapping("/database")
 public class DatabaseController {
 
     @Autowired
@@ -38,7 +40,7 @@ public class DatabaseController {
             description = "Get a list of all Tables.",
             tags = {}
     )
-    @GetMapping
+    @GetMapping("/tables")
     public ResponseEntity<List<String>> getAllTables() {
         List<String> tableNames = new ArrayList<>();
         try (Connection connection = dataSource.getConnection()) {
@@ -55,12 +57,17 @@ public class DatabaseController {
         }
     }
 
-    @GetMapping("/users/schema")
-    public ResponseEntity<Map<String, String>> getUsersTableSchema() {
+    @Operation(
+            summary = "Retrieve table schema",
+            description = "Retrieve table schema",
+            tags = {}
+    )
+    @GetMapping("/tables/schema/{tableName}")
+    public ResponseEntity<Map<String, String>> getTableSchema(@PathVariable String tableName) {
         Map<String, String> tableSchema = new HashMap<>();
         try (Connection connection = dataSource.getConnection()) {
             DatabaseMetaData metaData = connection.getMetaData();
-            ResultSet resultSet = metaData.getColumns(null, null, "user", null);
+            ResultSet resultSet = metaData.getColumns(null, null, tableName, null);
             while (resultSet.next()) {
                 String columnName = resultSet.getString("COLUMN_NAME");
                 String columnType = resultSet.getString("TYPE_NAME");
