@@ -3,7 +3,10 @@ package sg.edu.ntu.m3p3.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import sg.edu.ntu.m3p3.entity.Session;
+import sg.edu.ntu.m3p3.entity.User;
 
+import java.util.List;
+//import java.util.Optional;
 import java.util.Optional;
 
 public interface SessionRepository extends JpaRepository<Session, Long> {
@@ -11,6 +14,8 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
     // @SuppressWarnings("null")
     // Optional<Session> findById(UUID id);
 
-    Optional<Session> findById(Long id);
+     //Optional<Session> findById(Long userId);
+    List<Session> findByUserId(Long userId);
+    // Optional<Session> findById(Long userId);
 
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session>
+    <id>1</id>
+    <user>
+        <id>123</id>
+        <username>john_doe</username>
+        <email>john@example.com</email>
+    </user>
+    <start_time>2024-03-23T08:00:00</start_time>
+    <end_time>2024-03-23T09:00:00</end_time>
+    <remarks>This is a test session</remarks>
+</session>

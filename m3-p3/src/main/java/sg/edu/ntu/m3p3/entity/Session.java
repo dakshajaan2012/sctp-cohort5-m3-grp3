@@ -1,10 +1,13 @@
 package sg.edu.ntu.m3p3.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+//import jakarta.validation.constraints.NotEmpty;
+//import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Data
@@ -14,97 +17,111 @@ import lombok.*;
 @AllArgsConstructor
 @Table(name = "session_table")
 @EqualsAndHashCode(callSuper = false)
-
 public class Session {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NonNull
-    @NotEmpty(message = "Name can not be blank")
-    @Size(min = 3, message = "Name must be at least 3 characters long")
-    // @Column(unique = true)
 
-    @Column(name = "session_name")
-    private String sessionName;
+    // @ManyToOne()
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", unique = false)
+    @JsonIgnoreProperties("sessions")
+    private User user;
+
+    @ManyToOne
+    private Booking booking;
+
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
     @Column(name = "user_name")
     private String userName;
+    @NonNull
+    @Column(name = "activity")
+    private String activity;
 
-    // private String timeStart;
     @Column(name = "time_start", columnDefinition = "TIMESTAMP")
-    private LocalDateTime timeStart;
+    private LocalDateTime createdAt;
 
-    // private String timeStop;
     @Column(name = "time_stop", columnDefinition = "TIMESTAMP")
-    private LocalDateTime timeStop;
+    private LocalDateTime updatedAt;
 
-    // private boolean isDeleted;
-    // @Column(name = "Deleted")
+    @Column(name = "booking_time", columnDefinition = "TIMESTAMP")
+
+    private LocalDateTime bookingTime;
 
     @PrePersist
-    public void prePersist() {
-        // Auto-populate the timestamp before persisting
-        if (timeStart == null) {
-            timeStart = LocalDateTime.now();
-        }
-        if (timeStop == null) {
-            timeStop = LocalDateTime.now();
-        }
+      public void prePersist() {
+      
+   /*    if (bookingTime == null) {
+      bookingTime = bookingTime;
+      } */
+      
+      if (activity == null) {
+     activity = "Slot Booked";
+     }
     }
 
-    // Getters and setters
-
-    /*
-     * public void setDeleted(boolean deleted) {
-     * this.isDeleted = deleted;
-     * }
-     */
-    /*
-     * public boolean isDeleted() {
-     * return isDeleted;
-     * }
-     */
-
-    public void setName(String sessionName) {
-        this.sessionName = sessionName;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setUserName(String userName) {
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public LocalDateTime getBookingTime() {
+        return bookingTime;
+    }
+
+    public void setBookingTime(LocalDateTime bookingTime) {
+        this.bookingTime = bookingTime;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setActivity(String activity) {
+        this.activity = activity;
+    }
+
+    public String getActivity() {
+        return activity;
+    }
+
+    public Booking getBooking() {
+        return booking;
+    }
+
+    public void setBooking(Booking booking) {
+        this.booking = booking;
+    }
+
+    public Session(Long id, User user, String firstName, String lastName, String userName, String activity) {
+        this.id = id;
+        this.user = user;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.userName = userName;
-    }
+        this.activity = "Slot booked";
 
-    /*
-     * public String getName() {
-     * return name;
-     * }
-     */
-
-    /*
-     * public LocalDateTime getTimeStart() {
-     * return timeStart;
-     * }
-     */
-
-    public LocalDateTime getTimeStart() {
-        return timeStart;
-    }
-
-    /*
-     * public void setTimeStart(LocalDateTime timeStart) {
-     * this.timeStart = timeStart;
-     * }
-     */
-
-    public void setTimeStart(LocalDateTime timeStart) {
-        this.timeStart = timeStart;
-    }
-
-    public LocalDateTime getTimeStop() {
-        return timeStop;
-    }
-
-    public void setTimeStop(LocalDateTime timeStop) {
-        this.timeStop = timeStop;
     }
 
 }
