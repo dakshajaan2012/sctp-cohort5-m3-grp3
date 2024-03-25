@@ -1,4 +1,4 @@
-package sg.edu.ntu.m3p3.controllers;
+package sg.edu.ntu.m3p3.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

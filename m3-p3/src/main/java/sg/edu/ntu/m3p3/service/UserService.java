@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import sg.edu.ntu.m3p3.entity.UserLog;
 import sg.edu.ntu.m3p3.entity.User.User;
 
 public interface UserService {
@@ -19,5 +20,7 @@ public interface UserService {
     User updateUser(UUID userId, User updatedUser);
 
     void deleteUser(UUID userId);
+
+    UserLog addUserLogToUser(UUID userId, UserLog userLog);
 
 }

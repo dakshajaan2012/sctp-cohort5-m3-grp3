@@ -1,4 +1,4 @@
-package sg.edu.ntu.m3p3.controllers;
+package sg.edu.ntu.m3p3.Controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,13 +11,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.*;
+import sg.edu.ntu.m3p3.entity.UserLog;
 import sg.edu.ntu.m3p3.entity.User.CreateUserRequest;
 import sg.edu.ntu.m3p3.entity.User.User;
 import sg.edu.ntu.m3p3.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,15 +35,14 @@ public class UserController {
         this.userService = userService;
     }
 
-    @Operation(
-            summary = "Retrieve all users",
-            description = "Get a list of all users.",
-            tags = {}
-    )
+    @Operation(summary = "Retrieve all users", description = "Get a list of all users.", tags = {})
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Successful operation", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = User.class)) }),
-            @ApiResponse(responseCode = "404", description = "Users not found", content = { @Content(mediaType = "application/json") }),
-            @ApiResponse(responseCode = "500", description = "Internal server error", content = { @Content(mediaType = "application/json") })
+            @ApiResponse(responseCode = "200", description = "Successful operation", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = User.class)) }),
+            @ApiResponse(responseCode = "404", description = "Users not found", content = {
+                    @Content(mediaType = "application/json") }),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = {
+                    @Content(mediaType = "application/json") })
     })
     @GetMapping
     public ResponseEntity<ArrayList<User>> getAllUsers() {
@@ -54,16 +55,11 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-
-    @Operation(
-            summary = "Create a user",
-            description = "Create a user",
-            tags = {}
-    )
+    @Operation(summary = "Create a user", description = "Create a user", tags = {})
     @PostMapping("/create")
     public ResponseEntity<User> createUser(@Valid @RequestBody CreateUserRequest createUserRequest) {
         logger.info("Received request to create a new user");
-        
+
         // Map CreateUserRequest to User entity
         User user = new User();
         user.setUserName(createUserRequest.getUserName());
@@ -77,10 +73,10 @@ public class UserController {
         user.setLoginAttemptCounter(0);
         user.setIsActive(true);
         user.setIsDeleted(false);
-        
+
         // Create the user
         User createdUser = userService.createUser(user);
-        
+
         if (createdUser != null) {
             logger.info("User created successfully with ID: {}", createdUser.getUserId());
             return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
@@ -90,5 +86,11 @@ public class UserController {
         }
     }
 
+    @PostMapping("/{userId}/user-logs")
+    public ResponseEntity<UserLog> addUserLogToUser(@PathVariable UUID userId,
+            @RequestBody UserLog userLog) {
+        UserLog newUserLog = userService.addUserLogToUser(userId, userLog);
+        return new ResponseEntity<>(newUserLog, HttpStatus.OK);
+    }
 
 }
