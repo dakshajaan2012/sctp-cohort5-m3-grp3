@@ -1,6 +1,8 @@
 
 # Website Traffic Monitoring System
 
+Contributers: [Melissa Koh](https://github.com/merriemelly) | [Kelvin Chang](https://github.com/kelvin3118) | [Yao Hai](https://github.com/yaohai1216) | [Sunil](https://github.com/dakshajaan2012)
+
 ## Overview
 This project is designed to monitor the traffic patterns of our website during its beta phase, which is accessible to a limited number of users. 
 Our central goal is to gain comprehensive insights into user behavior and engagement within the website. 
