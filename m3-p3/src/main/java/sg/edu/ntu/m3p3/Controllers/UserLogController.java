@@ -40,8 +40,7 @@ public class UserLogController {
         }
         String countryOrigin = getCountryOrigin(ipAddress);
 
-        // Current ipAddress = 127.0.0.1
-        userLog.setIpAddress("222.164.130.246");
+        userLog.setIpAddress(ipAddress);
         userLog.setOrigin(countryOrigin);    
         UserLog createdUserLog = userLogService.createUserLog(userLog);
         return new ResponseEntity<>(createdUserLog, HttpStatus.CREATED);
@@ -49,7 +48,7 @@ public class UserLogController {
 
     // Helper method
     private String getCountryOrigin(String ipAddress) {
-        String apiUrl = "https://ipapi.co/" + "222.164.130.246" + "/city/";
+        String apiUrl = "https://ipapi.co/" + ipAddress + "/city/";
         String countryOrigin = restTemplate.getForObject(apiUrl, String.class);
         // System.out.println(countryOrigin);
         // System.out.flush();
