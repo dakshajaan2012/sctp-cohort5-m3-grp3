@@ -51,24 +51,12 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public List<Address> findAddressesByUser(User user) {
-        return addressRepository.findByUser(user);
-    }
-
-    @Override
     public List<Address> findAddressesByUserId(UUID userId) {
-        return addressRepository.findByUserId(userId);
+        return addressRepository.findByUser_UserId(userId);
     }
 
     @Override
     public List<Address> findAddressesByUserIdAndAlias(UUID userId, String alias) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAddressesByUserIdAndAlias'");
-    }
-
-    @Override
-    public Optional<Address> getAddressByIdAndUserId(Long addressId, UUID userId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAddressByIdAndUserId'");
+        return addressRepository.findByUser_UserIdAndAlias(userId, alias);
     }
 }

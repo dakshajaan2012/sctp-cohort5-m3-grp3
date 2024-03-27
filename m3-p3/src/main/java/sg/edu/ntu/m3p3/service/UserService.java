@@ -35,4 +35,6 @@ public interface UserService {
 
     List<User> bulkUpdateUsers(UserBulkUpdateRequest bulkUpdateRequest);
 
+	boolean existsById(UUID userId);
+
 }

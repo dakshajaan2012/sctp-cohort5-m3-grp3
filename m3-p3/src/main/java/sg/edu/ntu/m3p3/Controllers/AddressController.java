@@ -1,4 +1,4 @@
-package sg.edu.ntu.m3p3.Controllers;
+package sg.edu.ntu.m3p3.controllers;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.websocket.server.PathParam;
 import sg.edu.ntu.m3p3.entity.Address;
 import sg.edu.ntu.m3p3.service.AddressService;
 import sg.edu.ntu.m3p3.service.UserService;
@@ -83,6 +84,25 @@ public class AddressController {
 		}
 	}
 
+	@GetMapping("/{userId}/address")
+	public ResponseEntity<List<Address>> getUserAddressByUserId(@PathVariable UUID userId) {
+		if (!userService.existsById(userId)) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		List<Address> addresses = addressService.findAddressesByUserId(userId);
+		return ResponseEntity.ok(addresses);
+	}
+
+	@GetMapping("/{userId}/address/")
+	public ResponseEntity<List<Address>> getAddressByUserIdAndAlias(@PathVariable UUID userId,
+			@RequestParam String alias) {
+		List<Address> addresses = addressService.findAddressesByUserIdAndAlias(userId, alias);
+		if (addresses.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return ResponseEntity.ok(addresses);
+	}
+
 	@GetMapping("/{userId}/address/{addressId}")
 	public ResponseEntity<Address> getUserAddressById(@PathVariable UUID userId, @PathVariable Long addressId) {
 		if (!userService.existsById(userId)) {
@@ -90,15 +110,5 @@ public class AddressController {
 		}
 		Optional<Address> address = addressService.getAddressByIdAndUserId(addressId, userId);
 		return address.map(ResponseEntity::ok).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-	}
-
-	@GetMapping("/{userId}/address")
-	public ResponseEntity<List<Address>> getUserAddressesByAlias(@PathVariable UUID userId,
-			@RequestParam String alias) {
-		if (!userService.existsById(userId)) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		List<Address> addresses = addressService.findAddressesByUserIdAndAlias(userId, alias);
-		return ResponseEntity.ok(addresses);
 	}
 }

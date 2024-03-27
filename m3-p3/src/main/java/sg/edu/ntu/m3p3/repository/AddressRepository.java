@@ -1,6 +1,7 @@
 package sg.edu.ntu.m3p3.repository;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -11,4 +12,8 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
 	List<Address> findByCity(String city);
 
 	Address findByAlias(String alias);
+
+	List<Address> findByUser_UserId(UUID userId);
+
+	List<Address> findByUser_UserIdAndAlias(UUID userId, String alias);
 }
