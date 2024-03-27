@@ -1,6 +1,8 @@
 package sg.edu.ntu.m3p3.entity.User;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import jakarta.persistence.*;
@@ -10,6 +12,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
+import sg.edu.ntu.m3p3.entity.Address;
 
 @Data
 @Entity
@@ -63,6 +66,9 @@ public class User {
 
     @Column(name = "is_deleted")
     private boolean isDeleted;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Address> addresses = new HashSet<>();
 
     public User() {
     }
