@@ -215,4 +215,9 @@ public class UserServiceImpl implements UserService {
         return userLogRepository.save(userLog);
     }
 
+    @Override
+    public boolean existsById(UUID userId) {
+      return userRepository.existsById(userId);
+    }
+
 }

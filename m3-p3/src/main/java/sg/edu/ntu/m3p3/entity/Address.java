@@ -50,6 +50,6 @@ public class Address {
 	private String alias;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "user_id", referencedColumnName = "user_id")
+	@JoinColumn(name = "user_id")
 	private User user;
 }

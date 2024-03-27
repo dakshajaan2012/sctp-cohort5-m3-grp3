@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import sg.edu.ntu.m3p3.entity.Address;
-import sg.edu.ntu.m3p3.entity.User.User;
 
 @Service
 public interface AddressService {
@@ -20,8 +19,6 @@ public interface AddressService {
 	Address updateAddress(Address address);
 
 	void deleteAddressById(Long id);
-
-	 List<Address> findAddressesByUser(User user);
 
 	 List<Address> findAddressesByUserId(UUID userId);
 
