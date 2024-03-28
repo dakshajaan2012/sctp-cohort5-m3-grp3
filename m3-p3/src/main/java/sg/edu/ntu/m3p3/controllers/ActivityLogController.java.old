@@ -1,0 +1,14 @@
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/activityLogs")
+public class ActivityLogController {
+    private final ActivityLogService activityLogService;
+
+    public ActivityLogController(ActivityLogService activityLogService) {
+        this.activityLogService = activityLogService;
+    }
+    
+    // Define activity log-related REST endpoints
+}
