@@ -1,4 +1,4 @@
-package sg.edu.ntu.m3p3;
+package sg.edu.ntu.m3p3.serviceImpl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;

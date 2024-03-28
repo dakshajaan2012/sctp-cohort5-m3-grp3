@@ -1,4 +1,4 @@
-package sg.edu.ntu.m3p3;
+package sg.edu.ntu.m3p3.controller;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
