@@ -50,11 +50,15 @@ public class UserController {
     // })
     @GetMapping
     public ResponseEntity<ResponseWrapper<List<User>>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        if (users.isEmpty()) {
-            return responseUtil.createSuccessResponse(Collections.emptyList());
+        try {
+            List<User> users = userService.getAllUsers();
+            if (users.isEmpty()) {
+                return responseUtil.createSuccessResponse(Collections.emptyList());
+            }
+            return responseUtil.createSuccessResponse(users);
+        } catch (Exception e) {
+            return responseUtil.createErrorResponse(e.getMessage());
         }
-        return responseUtil.createSuccessResponse(users);
     }
 
     @Operation(summary = "Retrieve one user", description = "Get one user based on userId", tags = {})
@@ -200,26 +204,31 @@ public class UserController {
      */
 
     public ResponseEntity<ResponseWrapper<List<User>>> searchUsers(@RequestBody SearchCriteria searchCriteria) {
-        List<User> users = userService.findBySearchCriteria(searchCriteria);
+        try {
 
-        if (users.isEmpty()) {
-            // Return an empty success response if no users are found
-            return responseUtil.createSuccessResponse(Collections.emptyList());
+            List<User> users = userService.findBySearchCriteria(searchCriteria);
+            if (users.isEmpty()) {
+                // Return an empty success response if no users are found
+                return responseUtil.createSuccessResponse(Collections.emptyList());
+            }
+            return responseUtil.createSuccessResponse(users);
+        } catch (Exception e) {
+            return responseUtil.createErrorResponse(e.getMessage());
         }
-
-        // Return a success response with the list of users
-        return responseUtil.createSuccessResponse(users);
     }
 
     @Operation(summary = "Delete one user", description = "Delete one user", tags = {})
     @DeleteMapping("/{userId}")
     public ResponseEntity<ResponseWrapper<String>> deleteUser(@PathVariable UUID userId) {
         try {
+            if (!userService.existsById(userId)) {
+                return responseUtil.createErrorResponse("User with ID " + userId + " does not exist");
+            }
             userService.deleteUser(userId);
             return responseUtil.createSuccessResponse("User with ID " + userId + " has been deleted successfully");
         } catch (Exception e) {
-            return responseUtil.createErrorResponse("An error " + e.getMessage() +
-                    "occurred while deleting the user" + userId);
+            return responseUtil
+                    .createErrorResponse("An error occurred while deleting the user " + userId + ": " + e.getMessage());
         }
     }
 
@@ -227,8 +236,12 @@ public class UserController {
     @PostMapping("/{userId}/user-logs")
     public ResponseEntity<ResponseWrapper<UserLog>> addUserLogToUser(@PathVariable UUID userId,
             @RequestBody UserLog userLog) {
-        UserLog newUserLog = userService.addUserLogToUser(userId, userLog);
-        return responseUtil.createSuccessResponse(newUserLog);
+        try {
+            UserLog newUserLog = userService.addUserLogToUser(userId, userLog);
+            return responseUtil.createSuccessResponse(newUserLog);
+        } catch (Exception e) {
+            return responseUtil.createErrorResponse("Error adding user log to user with ID " + userId + e.getMessage());
+        }
     }
 
 }

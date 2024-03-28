@@ -1,7 +1,10 @@
 package sg.edu.ntu.m3p3.serviceImpl;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.data.jpa.domain.Specification;
@@ -9,10 +12,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.criteria.Predicate;
+import jakarta.transaction.Transactional;
 import sg.edu.ntu.m3p3.UserLogNotFoundException;
+import sg.edu.ntu.m3p3.entity.Session;
 import sg.edu.ntu.m3p3.entity.UserLog;
 import sg.edu.ntu.m3p3.entity.User.User;
 import sg.edu.ntu.m3p3.entity.User.UserBulkUpdateRequest;
+import sg.edu.ntu.m3p3.repository.AddressRepository;
+import sg.edu.ntu.m3p3.repository.FeatureUsageRepository;
+import sg.edu.ntu.m3p3.repository.SessionRepository;
 import sg.edu.ntu.m3p3.repository.UserLogRepository;
 import sg.edu.ntu.m3p3.repository.UserRepository;
 import sg.edu.ntu.m3p3.service.UserService;
@@ -27,10 +35,19 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserLogRepository userLogRepository;
+    private final AddressRepository addressRepository;
+    private final SessionRepository sessionRepository;
+    private final FeatureUsageRepository featureUsageRepository;
 
-    public UserServiceImpl(UserRepository userRepository, UserLogRepository userLogRepository) {
+    public UserServiceImpl(UserRepository userRepository, UserLogRepository userLogRepository,
+            FeatureUsageRepository featureUsageRepository,
+            SessionRepository sessionRepository,
+            AddressRepository addressRepository) {
         this.userRepository = userRepository;
         this.userLogRepository = userLogRepository;
+        this.addressRepository = addressRepository;
+        this.sessionRepository = sessionRepository;
+        this.featureUsageRepository = featureUsageRepository;
     }
 
     @Override
@@ -181,7 +198,46 @@ public class UserServiceImpl implements UserService {
                             predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(fieldName)),
                                     "%" + value.toString().toLowerCase()));
                         }
+                    case IS:
+                        for (String fieldName : fieldNames) {
+                            predicates.add(criteriaBuilder.isTrue(root.get(fieldName)));
+                        }
                         break;
+                    case IS_NOT:
+                        for (String fieldName : fieldNames) {
+                            predicates.add(criteriaBuilder.isFalse(root.get(fieldName)));
+                        }
+                        break;
+                    case ON_OR_BEFORE:
+                        for (String fieldName : fieldNames) {
+                            if (value instanceof LocalDateTime) {
+                                predicates.add(
+                                        criteriaBuilder.lessThanOrEqualTo(root.get(fieldName), (LocalDateTime) value));
+                            } else if (value instanceof String) {
+                                LocalDateTime dateTimeValue = LocalDateTime.parse((String) value);
+                                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(fieldName), dateTimeValue));
+                            } else {
+                                throw new IllegalArgumentException(
+                                        "Value must be a LocalDateTime or String for ON_OR_BEFORE comparison.");
+                            }
+                        }
+                        break;
+                    case ON_OR_AFTER:
+                        for (String fieldName : fieldNames) {
+                            if (value instanceof LocalDateTime) {
+                                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(fieldName),
+                                        (LocalDateTime) value));
+                            } else if (value instanceof String) {
+                                LocalDateTime dateTimeValue = LocalDateTime.parse((String) value);
+                                predicates
+                                        .add(criteriaBuilder.greaterThanOrEqualTo(root.get(fieldName), dateTimeValue));
+                            } else {
+                                throw new IllegalArgumentException(
+                                        "Value must be a LocalDateTime or String for ON_OR_AFTER comparison.");
+                            }
+                        }
+                        break;
+
                     default:
                         // Handle unsupported comparison operators
                         throw new IllegalArgumentException("Unsupported comparison operator: " + comparisonOperator);
@@ -234,7 +290,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(UUID userId) {
+        // Retrieve sessions associated with the user
+        List<Session> sessions = sessionRepository.findByUser_UserId(userId);
+
+        // Iterate through sessions and delete related data
+        for (Session session : sessions) {
+            // Delete related data for each session
+            featureUsageRepository.deleteBySession_SessionId(session.getSessionId());
+        }
+
+        // Delete sessions
+        sessionRepository.deleteByUser_UserId(userId);
+
+        // Delete other related data
+        userLogRepository.deleteByUser_UserId(userId);
+        addressRepository.deleteByUser_UserId(userId);
+
+        // Delete the user
         userRepository.deleteById(userId);
     }
 
@@ -247,7 +321,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean existsById(UUID userId) {
-      return userRepository.existsById(userId);
+        return userRepository.existsById(userId);
     }
 
 }

@@ -9,7 +9,11 @@ public enum ComparisonOperator {
     LESS_THAN_OR_EQUAL,
     CONTAINS,
     STARTS_WITH,
-    ENDS_WITH;
+    ENDS_WITH,
+    IS,
+    IS_NOT,
+    ON_OR_AFTER,
+    ON_OR_BEFORE;
 
     public static ComparisonOperator fromString(String text) {
         switch (text) {
@@ -31,6 +35,14 @@ public enum ComparisonOperator {
                 return STARTS_WITH;
             case "ENDS_WITH":
                 return ENDS_WITH;
+            case "IS":
+                return IS;
+            case "IS_NOT":
+                return IS_NOT;
+            case "ON_OR_AFTER":
+                return ON_OR_AFTER;
+            case "ON_OR_BEFORE":
+                return ON_OR_BEFORE;
             default:
                 throw new IllegalArgumentException("Invalid ComparisonOperator: " + text);
         }

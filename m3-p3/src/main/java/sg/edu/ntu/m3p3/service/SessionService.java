@@ -6,6 +6,7 @@ import org.springframework.web.server.ResponseStatusException;
 import sg.edu.ntu.m3p3.entity.Session;
 import sg.edu.ntu.m3p3.repository.SessionRepository;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class SessionService {
@@ -26,12 +27,12 @@ public class SessionService {
         return sessionRepository.save(session);
     }
 
-    public Session getSessionById(Long id) {
+    public Session getSessionById(UUID id) {
         return sessionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Session not found"));
     }
 
-    public Session updateSession(Long id, Session sessionDetails) {
+    public Session updateSession(UUID id, Session sessionDetails) {
         Session session = sessionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Session not found"));
 
@@ -44,7 +45,7 @@ public class SessionService {
         return sessionRepository.save(session);
     }
 
-    public void deleteSession(Long id) {
+    public void deleteSession(UUID id) {
 
         Session session = sessionRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,

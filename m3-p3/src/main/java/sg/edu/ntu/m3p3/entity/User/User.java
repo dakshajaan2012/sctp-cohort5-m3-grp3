@@ -13,6 +13,8 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import sg.edu.ntu.m3p3.entity.Address;
+import sg.edu.ntu.m3p3.entity.Session;
+import sg.edu.ntu.m3p3.entity.UserLog;
 
 @Data
 @Entity
@@ -71,7 +73,16 @@ public class User {
     private boolean isDeleted;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private Set<Address> addresses = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private Set<UserLog> userLogs = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private Set<Session> sessions = new HashSet<>();
 
     public User(String userName, String password, String firstName, String lastName, String email, boolean isAdmin) {
         this.userName = userName;

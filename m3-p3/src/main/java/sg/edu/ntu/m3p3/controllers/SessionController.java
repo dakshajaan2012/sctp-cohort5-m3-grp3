@@ -4,14 +4,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import sg.edu.ntu.m3p3.entity.Session;
 import sg.edu.ntu.m3p3.service.SessionService;
 import java.util.List;
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RestController
+@Tag(name = "Session", description = "Session APIs")
 @RequestMapping("/sessions")
 public class SessionController {
     private static final Logger logger = LoggerFactory.getLogger(SessionController.class);
@@ -50,7 +55,7 @@ public class SessionController {
     // get with id
 
     @GetMapping("/{id}")
-    public ResponseEntity<Session> getSessionById(@PathVariable Long id) {
+    public ResponseEntity<Session> getSessionById(@PathVariable UUID id) {
         Session session = sessionService.getSessionById(id);
         logger.info("GET /session/{} called", id);
         return ResponseEntity.ok(session);
@@ -59,14 +64,14 @@ public class SessionController {
 
     // update
     @PutMapping("/{id}")
-    public ResponseEntity<Session> updateSession(@PathVariable Long id, @RequestBody Session sessionDetails) {
+    public ResponseEntity<Session> updateSession(@PathVariable UUID id, @RequestBody Session sessionDetails) {
         Session updatedSession = sessionService.updateSession(id, sessionDetails);
         logger.info("PUT /session/{} updated", id);
         return ResponseEntity.ok(updatedSession);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteSession(@PathVariable Long id) {
+    public ResponseEntity<String> deleteSession(@PathVariable UUID id) {
         sessionService.deleteSession(id);
         logger.info("DELETE /session/{} deleted", id);
         // return ResponseEntity.noContent().build();
