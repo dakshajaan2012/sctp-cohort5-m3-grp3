@@ -2,6 +2,7 @@ package sg.edu.ntu.m3p3.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name = "user_logs")
 public class UserLog {
     @Id
@@ -34,8 +36,11 @@ public class UserLog {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "is_login")
+    private boolean isLogin;
+
     // Link to user
-    @ManyToOne (optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
