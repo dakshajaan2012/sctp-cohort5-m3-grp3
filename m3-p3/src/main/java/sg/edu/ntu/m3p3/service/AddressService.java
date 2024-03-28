@@ -20,9 +20,9 @@ public interface AddressService {
 
 	void deleteAddressById(Long id);
 
-	 List<Address> findAddressesByUserId(UUID userId);
+	List<Address> findAddressesByUserId(UUID userId);
 
-	 List<Address> findAddressesByUserIdAndAlias(UUID userId, String alias);
+	List<Address> findAddressesByUserIdAndAlias(UUID userId, String alias);
 
-	 Optional<Address> getAddressByIdAndUserId(Long addressId, UUID userId);
+	Optional<Address> getAddressByIdAndUserId(Long addressId, UUID userId);
 }

@@ -9,4 +9,6 @@ import sg.edu.ntu.m3p3.entity.UserLog;
 
 @Repository
 public interface UserLogRepository extends JpaRepository<UserLog, UUID> {
+
+    void deleteByUser_UserId(UUID userId);
 }

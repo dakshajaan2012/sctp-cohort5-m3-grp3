@@ -1,29 +1,29 @@
 package sg.edu.ntu.m3p3.serviceImpl;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.jpa.domain.Specification;
-
-import sg.edu.ntu.m3p3.entity.User.User;
-import sg.edu.ntu.m3p3.repository.UserRepository;
-import sg.edu.ntu.m3p3.serviceImpl.UserServiceImpl;
-import sg.edu.ntu.m3p3.utils.ComparisonOperator;
-import sg.edu.ntu.m3p3.utils.FilterCriteria;
-import sg.edu.ntu.m3p3.utils.LogicalOperator;
-import sg.edu.ntu.m3p3.utils.SearchCriteria;
-import sg.edu.ntu.m3p3.repository.UserLogRepository;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Optional;
+import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.boot.test.context.SpringBootTest;
 
-@ExtendWith(MockitoExtension.class)
+import sg.edu.ntu.m3p3.entity.User.User;
+import sg.edu.ntu.m3p3.repository.UserLogRepository;
+import sg.edu.ntu.m3p3.repository.UserRepository;
+
+@SpringBootTest
 public class UserServiceImplTest {
 
     @Mock

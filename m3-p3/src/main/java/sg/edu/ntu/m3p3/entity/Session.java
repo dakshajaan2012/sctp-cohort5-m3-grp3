@@ -1,25 +1,33 @@
 package sg.edu.ntu.m3p3.entity;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import sg.edu.ntu.m3p3.entity.FeatureUsage.FeatureUsage;
+import sg.edu.ntu.m3p3.entity.User.User;
 
 @Data
 @Entity
-@Builder
+// @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "session_table")
+@Table(name = "sessions")
 @EqualsAndHashCode(callSuper = false)
 
 public class Session {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "session_id")
+    private UUID sessionId;
     @NonNull
     @NotEmpty(message = "Name can not be blank")
     @Size(min = 3, message = "Name must be at least 3 characters long")
@@ -106,5 +114,19 @@ public class Session {
     public void setTimeStop(LocalDateTime timeStop) {
         this.timeStop = timeStop;
     }
+
+    // Setter for user
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
+    private User user;
+
+    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private Set<FeatureUsage> featureUsages = new HashSet<>();
 
 }

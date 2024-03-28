@@ -3,11 +3,13 @@ package sg.edu.ntu.m3p3.entity.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 public class CreateUserRequest {
 
     @NotEmpty(message = "Username is required")
@@ -31,4 +33,3 @@ public class CreateUserRequest {
     private boolean isAdmin;
 
 }
-

@@ -7,4 +7,6 @@ import sg.edu.ntu.m3p3.entity.FeatureUsage.FeatureUsage;
 import java.util.*;
 
 public interface FeatureUsageRepository extends JpaRepository<FeatureUsage, UUID> {
+
+    void deleteBySession_SessionId(UUID sessionId);
 }

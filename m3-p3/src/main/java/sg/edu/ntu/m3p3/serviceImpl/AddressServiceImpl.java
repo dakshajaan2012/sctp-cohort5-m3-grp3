@@ -16,7 +16,7 @@ import sg.edu.ntu.m3p3.service.AddressService;
 
 @Service
 public class AddressServiceImpl implements AddressService {
-	private final AddressRepository addressRepository;
+    private final AddressRepository addressRepository;
 
     @Autowired
     public AddressServiceImpl(AddressRepository addressRepository) {
@@ -58,5 +58,10 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public List<Address> findAddressesByUserIdAndAlias(UUID userId, String alias) {
         return addressRepository.findByUser_UserIdAndAlias(userId, alias);
+    }
+
+    @Override
+    public Optional<Address> getAddressByIdAndUserId(Long addressId, UUID userId) {
+        return addressRepository.findByIdAndUser_UserId(addressId, userId);
     }
 }
