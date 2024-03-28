@@ -16,6 +16,9 @@ import sg.edu.ntu.m3p3.entity.Address;
 
 @Data
 @Entity
+@NonNull
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "users")
 public class User {
 
@@ -70,7 +73,25 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Address> addresses = new HashSet<>();
 
-    public User() {
+    public User(String userName, String password, String firstName, String lastName, String email, boolean isAdmin) {
+        this.userName = userName;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.isAdmin = isAdmin;
+    }
+
+    public boolean getIsAdmin() {
+        return isAdmin;
+    }
+
+    public boolean getIsActive() {
+        return isActive;
+    }
+
+    public boolean getIsDeleted() {
+        return isDeleted;
     }
 
     public void setIsAdmin(boolean isAdmin) {

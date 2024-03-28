@@ -2,6 +2,7 @@ package sg.edu.ntu.m3p3.serviceImpl;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.repository.query.Param;
@@ -12,7 +13,6 @@ import sg.edu.ntu.m3p3.UserLogNotFoundException;
 import sg.edu.ntu.m3p3.entity.UserLog;
 import sg.edu.ntu.m3p3.entity.User.User;
 import sg.edu.ntu.m3p3.entity.User.UserBulkUpdateRequest;
-import sg.edu.ntu.m3p3.exceptions.UserNotFoundException;
 import sg.edu.ntu.m3p3.repository.UserLogRepository;
 import sg.edu.ntu.m3p3.repository.UserRepository;
 import sg.edu.ntu.m3p3.service.UserService;
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(UUID userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
+                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
     }
 
     @Override
@@ -46,18 +46,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUsersNativeQuery() {
-        return userRepository.findAllUsersNativeQuery();
-    }
-
-    @Override
     public Optional<User> findByUserName(String userName) {
         return userRepository.findByUserName(userName);
     }
 
     @Override
+    public void checkUsernameExists(String userName) {
+        Optional<User> existingUser = findByUserName(userName);
+        if (existingUser.isPresent()) {
+            throw new IllegalArgumentException("Username '" + userName + "' already exists");
+        }
+    }
+
+    @Override
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public void checkEmailExists(String email) {
+        Optional<User> existingEmail = findByEmail(email);
+        if (existingEmail.isPresent()) {
+            throw new IllegalArgumentException("Email '" + email + "' already exists");
+        }
     }
 
     @Override
@@ -67,23 +78,42 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
-        Optional<User> existingUserByUsername = findByUserName(user.getUserName());
-        if (existingUserByUsername.isPresent()) {
-            return null; // Username already exists, do not create
-        }
-        Optional<User> existingUserByEmail = findByEmail(user.getEmail());
-        if (existingUserByEmail.isPresent()) {
-            return null; // Email already exists, do not create
-        }
+        CompletableFuture<Optional<User>> existingUserByUsernameFuture = CompletableFuture
+                .supplyAsync(() -> findByUserName(user.getUserName()));
+        CompletableFuture<Optional<User>> existingUserByEmailFuture = CompletableFuture
+                .supplyAsync(() -> findByEmail(user.getEmail()));
 
-        // Set other attributes and save the user
-        user.setCreatedAt(LocalDateTime.now());
-        user.setUpdatedAt(LocalDateTime.now());
-        user.setLoginAttemptCounter(0);
-        user.setIsActive(true);
-        user.setIsDeleted(false);
+        try {
+            Optional<User> existingUserByUsername = existingUserByUsernameFuture.get();
+            Optional<User> existingUserByEmail = existingUserByEmailFuture.get();
 
-        return userRepository.save(user);
+            StringBuilder errorMessage = new StringBuilder();
+
+            if (existingUserByUsername.isPresent()) {
+                errorMessage.append("Username '").append(user.getUserName()).append("' already exists. ");
+            }
+            if (existingUserByEmail.isPresent()) {
+                errorMessage.append("Email '").append(user.getEmail()).append("' already exists.");
+            }
+
+            if (errorMessage.length() > 0) {
+                throw new IllegalArgumentException(errorMessage.toString());
+            }
+
+            // Set other attributes and save the user
+            user.setCreatedAt(LocalDateTime.now());
+            user.setUpdatedAt(LocalDateTime.now());
+            user.setLoginAttemptCounter(0);
+            user.setIsActive(true);
+            user.setIsDeleted(false);
+
+            return userRepository.save(user);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        } catch (Exception e) {
+            // Handle other exceptions if needed
+            throw new IllegalArgumentException("Failed to create user: " + e.getMessage());
+        }
     }
 
     @Override
