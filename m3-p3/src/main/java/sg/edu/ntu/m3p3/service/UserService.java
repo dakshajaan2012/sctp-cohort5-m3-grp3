@@ -17,11 +17,13 @@ public interface UserService {
 
     ArrayList<User> getAllUsers();
 
-    List<User> getAllUsersNativeQuery();
-
     Optional<User> findByUserName(String userName);
 
+    void checkUsernameExists(String userName);
+
     Optional<User> findByEmail(String email);
+
+    void checkEmailExists(String email);
 
     User updateUser(UUID userId, User user);
 

@@ -9,4 +9,10 @@ public class FilterCriteria {
     private List<String> fieldNames;
     private ComparisonOperator comparisonOperator;
     private Object value;
+
+    public FilterCriteria(List<String> fieldName, ComparisonOperator comparisonOperator, Object value) {
+        this.fieldNames = fieldName;
+        this.comparisonOperator = comparisonOperator;
+        this.value = value;
+    }
 }
