@@ -1,4 +1,4 @@
-package sg.edu.ntu.m3p3;
+package sg.edu.ntu.m3p3.serviceImpl;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
