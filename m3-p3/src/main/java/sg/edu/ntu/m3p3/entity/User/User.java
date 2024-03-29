@@ -13,6 +13,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import sg.edu.ntu.m3p3.entity.Address;
+import sg.edu.ntu.m3p3.entity.Booking;
 import sg.edu.ntu.m3p3.entity.Session;
 import sg.edu.ntu.m3p3.entity.UserLog;
 
@@ -83,6 +84,10 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private Set<Session> sessions = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private Set<Booking> bookings = new HashSet<>();
 
     public User(String userName, String password, String firstName, String lastName, String email, boolean isAdmin) {
         this.userName = userName;

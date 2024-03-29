@@ -9,5 +9,5 @@ import sg.edu.ntu.m3p3.entity.Booking;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
-    Optional<Booking> findByUserId(UUID userId);
+    Optional<Booking> findByUser_UserId(UUID userId);
 }
