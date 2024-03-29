@@ -4,7 +4,7 @@ Contributers: [Melissa Koh](https://github.com/merriemelly) | [Kelvin Chang](htt
 
 ## Overview
 
-This project is designed to monitor the traffic patterns of our website during its beta phase, which is accessible to a limited number of users.
+This project is designed to monitor the traffic patterns of our [website](https://relaxed-crepe-fe83a4.netlify.app/) during its beta phase, which is accessible to a limited number of users.
 Our central goal is to gain comprehensive insights into user behavior and engagement within the website.
 By systematically logging various user activities, including sign-ups, logins, session durations, and interactions, we aim to refine our understanding of user requirements.
 This valuable understanding will inform our efforts to improve the website and introduce additional features prior to its public launch.
