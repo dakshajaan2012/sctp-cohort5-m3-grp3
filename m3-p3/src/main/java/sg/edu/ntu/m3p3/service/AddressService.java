@@ -25,4 +25,8 @@ public interface AddressService {
 	List<Address> findAddressesByUserIdAndAlias(UUID userId, String alias);
 
 	Optional<Address> getAddressByIdAndUserId(Long addressId, UUID userId);
+
+	List<Address> findUserFavoriteAddresses(UUID userId);
+
+	Address createAddressForUser(UUID userId, Address address);
 }

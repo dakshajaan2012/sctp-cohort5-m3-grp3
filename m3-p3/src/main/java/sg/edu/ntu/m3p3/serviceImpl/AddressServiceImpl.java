@@ -11,16 +11,22 @@ import org.springframework.stereotype.Service;
 
 import sg.edu.ntu.m3p3.entity.Address;
 import sg.edu.ntu.m3p3.entity.User.User;
+import sg.edu.ntu.m3p3.exception.UserNotFoundException;
 import sg.edu.ntu.m3p3.repository.AddressRepository;
+import sg.edu.ntu.m3p3.repository.UserRepository;
 import sg.edu.ntu.m3p3.service.AddressService;
 
 @Service
 public class AddressServiceImpl implements AddressService {
     private final AddressRepository addressRepository;
+    private final UserRepository userRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(AddressServiceImpl.class);
 
     @Autowired
-    public AddressServiceImpl(AddressRepository addressRepository) {
+    public AddressServiceImpl(AddressRepository addressRepository, UserRepository userRepository) {
         this.addressRepository = addressRepository;
+        this.userRepository = userRepository;
     }
 
     @SuppressWarnings("null")
@@ -64,4 +70,22 @@ public class AddressServiceImpl implements AddressService {
     public Optional<Address> getAddressByIdAndUserId(Long addressId, UUID userId) {
         return addressRepository.findByIdAndUser_UserId(addressId, userId);
     }
+
+    @Override
+    public List<Address> findUserFavoriteAddresses(UUID userId) {
+        return addressRepository.findByUser_UserIdAndIsFavorite(userId, true);
+    }
+
+    @Override
+    public Address createAddressForUser(UUID userId, Address address) {
+        return userRepository.findById(userId).map(user -> {
+            address.setUser(user);
+            logger.info("Creating address for userId: {}", userId);
+            return addressRepository.save(address);
+        }).orElseThrow(() -> {
+            logger.error("User not found with id: {}", userId);
+            return new UserNotFoundException("User not found with id " + userId);
+        });
+    }
+
 }
