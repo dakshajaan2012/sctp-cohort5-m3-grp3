@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import sg.edu.ntu.m3p3.entity.Address;
-import sg.edu.ntu.m3p3.entity.User.User;
 import sg.edu.ntu.m3p3.exception.UserNotFoundException;
 import sg.edu.ntu.m3p3.repository.AddressRepository;
 import sg.edu.ntu.m3p3.repository.UserRepository;

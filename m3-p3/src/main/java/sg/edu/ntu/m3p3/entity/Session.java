@@ -1,132 +1,78 @@
 package sg.edu.ntu.m3p3.entity;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
-import lombok.*;
-import sg.edu.ntu.m3p3.entity.FeatureUsage.FeatureUsage;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
+//import jakarta.validation.constraints.NotEmpty;
+//import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import sg.edu.ntu.m3p3.entity.User.User;
+//import sg.edu.ntu.m3p3.entity.Booking;
+//import sg.edu.ntu.m3p3.entity.ParkingSlot;
 
 @Data
 @Entity
-// @Builder
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "sessions")
-@EqualsAndHashCode(callSuper = false)
-
 public class Session {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "session_id")
+    @Column(name = "session_id") // Seems ok
     private UUID sessionId;
-    @NonNull
-    @NotEmpty(message = "Name can not be blank")
-    @Size(min = 3, message = "Name must be at least 3 characters long")
-    // @Column(unique = true)
 
-    @Column(name = "session_name")
-    private String sessionName;
-    @Column(name = "user_name")
-    private String userName;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    // @JsonIgnoreProperties("sessions")
+    private User user;
 
-    // private String timeStart;
+    @ManyToOne
+    private Booking booking;
+
+    /*
+     * @Column(name = "first_name")
+     * private String firstName;
+     * 
+     * @Column(name = "last_name")
+     * private String lastName;
+     */
+
+    // @Column(name = "user_name")
+    // private String userName;
+
+    @Column(name = "activity", nullable = false)
+    private String activity = "Slot Booked"; // static
+
     @Column(name = "time_start", columnDefinition = "TIMESTAMP")
-    private LocalDateTime timeStart;
+    private LocalDateTime createdAt;
 
-    // private String timeStop;
     @Column(name = "time_stop", columnDefinition = "TIMESTAMP")
-    private LocalDateTime timeStop;
+    private LocalDateTime updatedAt;
 
-    // private boolean isDeleted;
-    // @Column(name = "Deleted")
+    @Column(name = "booking_time", columnDefinition = "TIMESTAMP")
+    private LocalDateTime bookingTime;
 
     @PrePersist
     public void prePersist() {
-        // Auto-populate the timestamp before persisting
-        if (timeStart == null) {
-            timeStart = LocalDateTime.now();
-        }
-        if (timeStop == null) {
-            timeStop = LocalDateTime.now();
+        if (activity == null) {
+            activity = "Slot Booked";
         }
     }
-
-    // Getters and setters
-
-    /*
-     * public void setDeleted(boolean deleted) {
-     * this.isDeleted = deleted;
-     * }
-     */
-    /*
-     * public boolean isDeleted() {
-     * return isDeleted;
-     * }
-     */
-
-    public void setName(String sessionName) {
-        this.sessionName = sessionName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    /*
-     * public String getName() {
-     * return name;
-     * }
-     */
-
-    /*
-     * public LocalDateTime getTimeStart() {
-     * return timeStart;
-     * }
-     */
-
-    public LocalDateTime getTimeStart() {
-        return timeStart;
-    }
-
-    /*
-     * public void setTimeStart(LocalDateTime timeStart) {
-     * this.timeStart = timeStart;
-     * }
-     */
-
-    public void setTimeStart(LocalDateTime timeStart) {
-        this.timeStart = timeStart;
-    }
-
-    public LocalDateTime getTimeStop() {
-        return timeStop;
-    }
-
-    public void setTimeStop(LocalDateTime timeStop) {
-        this.timeStop = timeStop;
-    }
-
-    // Setter for user
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    @JsonBackReference
-    private User user;
-
-    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
-    private Set<FeatureUsage> featureUsages = new HashSet<>();
 
 }

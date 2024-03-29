@@ -67,8 +67,8 @@ public class FeatureUsageController {
         }
     }
 
-    @Operation(summary = "Features per Session and Overall Median", description = "Features per Session and Overall Median", tags = {})
-    @GetMapping("/median")
+    @Operation(summary = "Feature Usages per Session and Overall Feature Usage count", description = "Feature Usages per Session and  Overall Feature Usage count", tags = {})
+    @GetMapping("/total")
     public ResponseEntity<ResponseWrapper<Map<String, Object>>> calculateFeatureIdsPerSession() {
         try {
             Map<String, Object> featureIdsPerSession = featureUsageService.calculateFeatureIdsPerSession();

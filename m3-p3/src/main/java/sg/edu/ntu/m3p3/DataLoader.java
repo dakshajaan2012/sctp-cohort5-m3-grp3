@@ -64,13 +64,13 @@ public class DataLoader {
 				createAddressesForUser(user, aliases);
 			}
 
-			// Create and save user logs (100 logs in total)
-			for (int j = 1; j <= 10; j++) {
+			// Create and save user logs (50 logs in total)
+			for (int j = 1; j <= 5; j++) {
 				createUserLog(user, "127.0.0." + ((i - 1) * 10 + j), "Web");
 			}
 
-			// Create and save sessions (100 sessions in total)
-			for (int j = 1; j <= 10; j++) {
+			// Create and save sessions (50 sessions in total)
+			for (int j = 1; j <= 5; j++) {
 				createSession(user, "Session " + ((i - 1) * 10 + j));
 			}
 		}
@@ -154,16 +154,15 @@ public class DataLoader {
 
 		Session session = new Session();
 		session.setUser(user);
-		session.setSessionName(sessionName);
-		session.setTimeStart(createdAt);
-		session.setTimeStop(timeStop);
+		session.setCreatedAt(createdAt);
+		session.setUpdatedAt(timeStop);
 		sessionRepository.save(session);
 	}
 
 	private void loadFeaturesAndUsages() {
 		LocalDateTime createdAt = getRandomDateTimeIn2024();
 		// Load features
-		for (int i = 1; i <= 50; i++) {
+		for (int i = 1; i <= 20; i++) {
 			Feature feature = new Feature();
 			feature.setFeatureName(randomFeatureName());
 			feature.setAction(randomAction());
@@ -183,7 +182,7 @@ public class DataLoader {
 		Random randomSession = new Random();
 
 		// Load feature usages
-		for (int i = 1; i <= 300; i++) {
+		for (int i = 1; i <= 100; i++) {
 			int randomFeatureIndex = randomFeature.nextInt(allFeatures.size());
 			Feature r1 = allFeatures.get(randomFeatureIndex);
 

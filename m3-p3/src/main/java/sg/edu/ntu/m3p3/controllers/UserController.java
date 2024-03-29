@@ -176,32 +176,8 @@ public class UserController {
         }
     }
 
-    @Operation(summary = "Multifiltering search for users", description = "Multifiltering search for users", tags = {})
+    @Operation(summary = "Multifiltering search for users", description = "Multifiltering search for users. Example JSON request body:\n```\n{\n  \"filterCriteriaList\": [\n    {\n      \"fieldNames\": [\"email\"],\n      \"comparisonOperator\": \"CONTAINS\",\n      \"value\": \"gov.sg\"\n    },\n    {\n      \"fieldNames\": [\"isAdmin\"],\n      \"comparisonOperator\": \"IS\",\n      \"value\": true\n    }\n  ],\n  \"logicalOperator\": \"OR\"\n}\n```", tags = {})
     @PostMapping("/search")
-    /*
-     * Sample Request Body:
-     * {
-     * "filterCriteriaList": [
-     * {
-     * "fieldNames": ["userName"],
-     * "comparisonOperator": "CONTAINS",
-     * "value": "john"
-     * },
-     * {
-     * "fieldNames": ["isAdmin"],
-     * "comparisonOperator": "EQUALS",
-     * "value": true
-     * },
-     * {
-     * "fieldNames": ["loginAttemptCounter"],
-     * "comparisonOperator": "GREATER_THAN",
-     * "value": 5
-     * }
-     * ],
-     * "logicalOperator": "OR"
-     * }
-     * 
-     */
 
     public ResponseEntity<ResponseWrapper<List<User>>> searchUsers(@RequestBody SearchCriteria searchCriteria) {
         try {

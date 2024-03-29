@@ -1,33 +1,51 @@
 package sg.edu.ntu.m3p3.controllers;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
-import sg.edu.ntu.m3p3.entity.Session;
-import sg.edu.ntu.m3p3.service.SessionService;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import sg.edu.ntu.m3p3.entity.Session;
+import sg.edu.ntu.m3p3.repository.BookingRepository;
+import sg.edu.ntu.m3p3.repository.SessionRepository;
+import sg.edu.ntu.m3p3.repository.UserRepository;
+import sg.edu.ntu.m3p3.service.SessionService;
 
 @RestController
-@Tag(name = "Session", description = "Session APIs")
 @RequestMapping("/sessions")
 public class SessionController {
     private static final Logger logger = LoggerFactory.getLogger(SessionController.class);
     private final SessionService sessionService;
+    private final SessionRepository sessionRepository;
+    private final UserRepository userRepository;
+    private final BookingRepository bookingRepository;
 
-    // @Autowired
-    public SessionController(SessionService sessionService) {
+    public SessionController(SessionService sessionService, SessionRepository sessionRepository,
+            UserRepository userRepository, BookingRepository bookingRepository) {
         this.sessionService = sessionService;
+        this.sessionRepository = sessionRepository;
+        this.userRepository = userRepository;
+        this.bookingRepository = bookingRepository;
     }
 
-    // get all
+    @Autowired
+    // Ok
+    // Get all /sessions
     @GetMapping
     public ResponseEntity<List<Session>> getAllSession() {
         List<Session> sessions = sessionService.getAllSession();
@@ -40,42 +58,47 @@ public class SessionController {
         return ResponseEntity.ok(sessions);
     }
 
-    // post, with validation
-    @PostMapping
-    public ResponseEntity<Session> createSession(@Valid @RequestBody Session session, BindingResult bindingResult) {
-        logger.info("POST /session created");
-        if (bindingResult.hasErrors()) {
+    // Ok
+    // End point /sessions/users/userid
+    @Operation(summary = "Create Parking Slot", description = "Before calling this API, you have to:\n" +
+            "1. POST /slots - Create Parking Slot\n" +
+            "2. GET /slot - Retrieve ParkingSlotId\n" +
+            "3. POST /bookings - Create Booking\n" +
+            "4. POST /sessions/users/{userId} - Create Session")
 
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        Session createdSession = sessionService.createSession(session);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdSession);
+    @PostMapping("/users/{userId}")
+    public ResponseEntity<Map<String, String>> createSessionForUser(@PathVariable UUID userId,
+            @RequestBody Session sessionData) {
+        Session session = sessionService.createSessionForUser(userId, sessionData);
+        String message = "Session created successfully for user with ID: " + userId;
+        return ResponseEntity.ok(Collections.singletonMap("message", message));
+        // return ResponseEntity.ok(session);
     }
 
-    // get with id
-
+    // Get session with sessionId- ok
+    // End point- sessions/sessionId created
     @GetMapping("/{id}")
-    public ResponseEntity<Session> getSessionById(@PathVariable UUID id) {
-        Session session = sessionService.getSessionById(id);
-        logger.info("GET /session/{} called", id);
+    public ResponseEntity<Session> getSessionById(@PathVariable UUID userId) {
+        Session session = sessionService.getSessionById(userId);
+        logger.info("GET /session/{} called", userId);
         return ResponseEntity.ok(session);
         // return ResponseEntity.ok("GET /sessions/" + id + " ok");
     }
 
-    // update
-    @PutMapping("/{id}")
-    public ResponseEntity<Session> updateSession(@PathVariable UUID id, @RequestBody Session sessionDetails) {
-        Session updatedSession = sessionService.updateSession(id, sessionDetails);
-        logger.info("PUT /session/{} updated", id);
+    // Update not applicable
+    @PutMapping("/{userId}")
+    public ResponseEntity<Session> updateSession(@PathVariable UUID userId, @RequestBody Session sessionDetails) {
+        Session updatedSession = sessionService.updateSession(userId, sessionDetails);
+        logger.info("PUT /session/{} updated", userId);
         return ResponseEntity.ok(updatedSession);
     }
 
-    @DeleteMapping("/{id}")
+    // Session can not be deleted
+    @DeleteMapping("sessions/{id}")
     public ResponseEntity<String> deleteSession(@PathVariable UUID id) {
         sessionService.deleteSession(id);
         logger.info("DELETE /session/{} deleted", id);
         // return ResponseEntity.noContent().build();
         return ResponseEntity.ok("Session with Id " + id + " has been deleted.");
     }
-
 }

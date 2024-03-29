@@ -1,13 +1,16 @@
 package sg.edu.ntu.m3p3.serviceImpl;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
 import sg.edu.ntu.m3p3.entity.FeatureUsage.FeatureUsage;
 import sg.edu.ntu.m3p3.repository.FeatureUsageRepository;
-
 import sg.edu.ntu.m3p3.service.FeatureUsageService;
 
 @Service
@@ -38,12 +41,26 @@ public class FeatureUsageServiceImpl implements FeatureUsageService {
 
         Map<String, Integer> aggregatedData = new HashMap<>();
 
+        // Aggregate feature usage data
         for (FeatureUsage featureUsage : featureUsages) {
-            String featureName = featureUsage.getFeature().getFeatureName().name(); // Get enum name as string
+            String featureName = featureUsage.getFeature().getFeatureName().name();
+            // Add value retrieved from aggregatedData corresponding featureName
             aggregatedData.put(featureName, aggregatedData.getOrDefault(featureName, 0) + 1);
         }
 
-        return aggregatedData;
+        // Convert the map to a list of entries
+        List<Map.Entry<String, Integer>> entryList = new ArrayList<>(aggregatedData.entrySet());
+
+        // Sort the list based on the values in descending order
+        entryList.sort(Map.Entry.<String, Integer>comparingByValue().reversed());
+
+        // Convert the sorted list back to a map
+        Map<String, Integer> sortedAggregatedData = new LinkedHashMap<>();
+        for (Map.Entry<String, Integer> entry : entryList) {
+            sortedAggregatedData.put(entry.getKey(), entry.getValue());
+        }
+
+        return sortedAggregatedData;
     }
 
     @Override
@@ -57,20 +74,15 @@ public class FeatureUsageServiceImpl implements FeatureUsageService {
             featureIdsPerSession.put(sessionId, featureIdsPerSession.getOrDefault(sessionId, 0) + 1);
         }
 
-        // Calculate median overall features per session
-        List<Integer> counts = new ArrayList<>(featureIdsPerSession.values());
-        counts.sort(Integer::compareTo);
-        double median;
-        if (counts.size() % 2 == 0) {
-            int mid = counts.size() / 2;
-            median = (counts.get(mid - 1) + counts.get(mid)) / 2.0;
-        } else {
-            median = counts.get(counts.size() / 2);
+        // Calculate total overall features IDs
+        int totalCount = 0;
+        for (int count : featureIdsPerSession.values()) {
+            totalCount += count;
         }
 
         Map<String, Object> result = new HashMap<>();
         result.put("featureIdsPerSession", featureIdsPerSession);
-        result.put("medianOverallFeaturesPerSession", median);
+        result.put("totalOverallFeatureIds", totalCount);
         return result;
     }
 

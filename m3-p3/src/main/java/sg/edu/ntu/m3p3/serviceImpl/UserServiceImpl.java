@@ -135,15 +135,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findBySearchCriteria(SearchCriteria searchCriteria) {
+        // Build the specification based on the provided search criteria
         Specification<User> specification = buildSpecification(searchCriteria);
+
+        // Use the UserRepository to find users based on the generated specification
         return userRepository.findAll(specification);
     }
 
     private <T extends Comparable<? super T>> Specification<User> buildSpecification(SearchCriteria searchCriteria) {
         return (root, query, criteriaBuilder) -> {
+            // Create a list to hold the predicates (conditions) to be applied in the query
             List<Predicate> predicates = new ArrayList<>();
 
-            // Iterate through the filter criteria list
+            // Iterate through the filter criteria list provided in the search criteria
             for (FilterCriteria filterCriteria : searchCriteria.getFilterCriteriaList()) {
                 List<String> fieldNames = filterCriteria.getFieldNames();
                 ComparisonOperator comparisonOperator = filterCriteria.getComparisonOperator();
@@ -252,6 +256,7 @@ public class UserServiceImpl implements UserService {
                 finalPredicate = criteriaBuilder.or(predicates.toArray(new Predicate[0]));
             }
 
+            // Return the final predicates: combined conditions for the query
             return finalPredicate;
         };
     }

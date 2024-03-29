@@ -23,7 +23,7 @@ public class FeatureUsage {
     private UUID featureUsageId;
 
     @ManyToOne
-    @JoinColumn(name = "session_id", referencedColumnName = "session_id") // TODO: Change to sessionId
+    @JoinColumn(name = "session_id", referencedColumnName = "session_id")
     private Session session;
 
     @ManyToOne

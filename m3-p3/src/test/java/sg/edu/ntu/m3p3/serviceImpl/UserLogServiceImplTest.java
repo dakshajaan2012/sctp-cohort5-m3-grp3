@@ -17,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import sg.edu.ntu.m3p3.entity.UserLog;
 import sg.edu.ntu.m3p3.repository.UserLogRepository;
-import sg.edu.ntu.m3p3.serviceImpl.UserLogServiceImpl;
 
 @SpringBootTest
 public class UserLogServiceImplTest {

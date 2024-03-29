@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import sg.edu.ntu.m3p3.entity.UserLog;
 import sg.edu.ntu.m3p3.service.UserLogService;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@Tag(name = "User Log", description = "Usesr Log APIs")
 @RequestMapping("/user-logs")
 public class UserLogController {
     private static final Logger logger = LoggerFactory.getLogger(UserLogController.class);
@@ -41,7 +43,7 @@ public class UserLogController {
         String countryOrigin = getCountryOrigin(ipAddress);
 
         userLog.setIpAddress(ipAddress);
-        userLog.setOrigin(countryOrigin);    
+        userLog.setOrigin(countryOrigin);
         UserLog createdUserLog = userLogService.createUserLog(userLog);
         return new ResponseEntity<>(createdUserLog, HttpStatus.CREATED);
     }
