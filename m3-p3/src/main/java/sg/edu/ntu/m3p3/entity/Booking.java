@@ -1,15 +1,10 @@
 package sg.edu.ntu.m3p3.entity;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import lombok.*;
 import sg.edu.ntu.m3p3.entity.User.User;
 
@@ -19,47 +14,26 @@ import sg.edu.ntu.m3p3.entity.User.User;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "booking")
-
 public class Booking {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "booking_id")
+    private UUID id;
 
     @ManyToOne
     private User user;
 
     @ManyToOne
     private ParkingSlot parkingSlot;
+
     @Column(name = "booking_time", columnDefinition = "TIMESTAMP")
     private LocalDateTime bookingTime;
 
-    /*
-     * public Booking(User user, ParkingSlot parkingSlot, ParkingSlot bookingTime) {
-     * 
-     * this.user = user;
-     * this.parkingSlot = parkingSlot;
-     * this.bookingTime = bookingTime;
-     * 
-     * }
-     */
-
-    // Constructor accepting id, user, and parkingSlot parameters
-    public Booking(Long id, User user, ParkingSlot parkingSlot) {
-        this.id = id;
-        this.user = user;
-        this.parkingSlot = parkingSlot;
-    }
-
-    // Getters and setters
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public Booking(LocalDateTime bookingTime) {
-        this.bookingTime = bookingTime;
-    }
-
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -89,15 +63,17 @@ public class Booking {
 
     @PrePersist
     public void prePersist() {
-        // Auto-populate the timestamp before persisting
-        LocalDateTime currentTime = LocalDateTime.now();
-        // logger.info("Current time: " + currentTime);
-
+        // Auto-populate the timestamp before processing
         if (bookingTime == null) {
-            bookingTime = currentTime;
-            // logger.info("Setting createdAt to: " + createdAt);
+            bookingTime = LocalDateTime.now();
         }
+    }
 
+    public Booking(UUID id, User user, ParkingSlot parkingSlot) {
+        this.id = id;
+        this.user = user;
+        this.parkingSlot = parkingSlot;
+        this.bookingTime = LocalDateTime.now(); // Set booking time to current time
     }
 
 }
