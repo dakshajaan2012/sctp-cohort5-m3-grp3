@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.websocket.server.PathParam;
 import sg.edu.ntu.m3p3.entity.Address;
 import sg.edu.ntu.m3p3.service.AddressService;
 import sg.edu.ntu.m3p3.service.UserService;
@@ -110,5 +109,14 @@ public class AddressController {
 		}
 		Optional<Address> address = addressService.getAddressByIdAndUserId(addressId, userId);
 		return address.map(ResponseEntity::ok).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+	}
+
+	@GetMapping("/{userId}/favorites")
+	public ResponseEntity<List<Address>> getUserFavoriteAddresses(@PathVariable UUID userId) {
+		List<Address> favoriteAddresses = addressService.findUserFavoriteAddresses(userId);
+		if (favoriteAddresses.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.ok(favoriteAddresses);
 	}
 }

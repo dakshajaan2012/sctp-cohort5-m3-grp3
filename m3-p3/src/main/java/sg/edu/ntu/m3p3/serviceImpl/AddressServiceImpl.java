@@ -64,4 +64,9 @@ public class AddressServiceImpl implements AddressService {
     public Optional<Address> getAddressByIdAndUserId(Long addressId, UUID userId) {
         return addressRepository.findByIdAndUser_UserId(addressId, userId);
     }
+
+    @Override
+    public List<Address> findUserFavoriteAddresses(UUID userId) {
+        return addressRepository.findByUser_UserIdAndIsFavorite(userId, true);
+    }
 }
