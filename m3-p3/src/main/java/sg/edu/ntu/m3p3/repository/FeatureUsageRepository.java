@@ -8,5 +8,6 @@ import java.util.*;
 
 public interface FeatureUsageRepository extends JpaRepository<FeatureUsage, UUID> {
 
-    void deleteBySession_SessionId(UUID sessionId);
+    // void deleteBySession_SessionId(UUID sessionId);
+    void deleteBySession_Id(UUID sessionId);
 }

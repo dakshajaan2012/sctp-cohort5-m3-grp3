@@ -1,4 +1,4 @@
-package sg.edu.ntu.m3p3.Controllers;
+package sg.edu.ntu.m3p3.controllers;
 
 import java.util.List;
 import java.util.UUID;

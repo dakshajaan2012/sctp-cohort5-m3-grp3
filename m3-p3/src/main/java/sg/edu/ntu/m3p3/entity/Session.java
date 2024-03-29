@@ -16,17 +16,17 @@ import sg.edu.ntu.m3p3.entity.User.User;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "session_table")
+@Table(name = "session")
 public class Session {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id") // Seems ok
+    @Column(name = "session_id") // Seems ok
     private UUID id;
 
     @ManyToOne
-    // @JoinColumn(name = "user_id", referencedColumnName = "id") not applicable
-    @JsonIgnoreProperties("sessions")
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    // @JsonIgnoreProperties("sessions")
     private User user;
 
     @ManyToOne
