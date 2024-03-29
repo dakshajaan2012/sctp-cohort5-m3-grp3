@@ -5,10 +5,17 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import jakarta.persistence.EntityNotFoundException;
 import sg.edu.ntu.m3p3.entity.Booking;
 import sg.edu.ntu.m3p3.entity.ParkingSlot;
+import sg.edu.ntu.m3p3.entity.Session;
+//import sg.edu.ntu.m3p3.entity.User;
 import sg.edu.ntu.m3p3.entity.User.User;
 import sg.edu.ntu.m3p3.repository.BookingRepository;
 import sg.edu.ntu.m3p3.repository.ParkingSlotRepository;
@@ -25,11 +32,15 @@ public class BookingService {
     @Autowired
     private ParkingSlotRepository parkingSlotRepository;
 
-    // Make booking
+    @Autowired
+    public BookingService(BookingRepository bookingRepository) {
+        this.bookingRepository = bookingRepository;
+    }
 
-    public Booking bookSlot(UUID userId, Long slotId) {
+    // Make a booking process
+    public Booking bookSlot(UUID userId, UUID slotId) {
         // Retrieve user and parking slot from the database
-        User user = userRepository.findById(userId)
+        sg.edu.ntu.m3p3.entity.User.User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
 
         ParkingSlot parkingSlot = parkingSlotRepository.findById(slotId)
@@ -47,8 +58,30 @@ public class BookingService {
     }
 
     // Get all booking
-    public List<Booking> getAllBooking() {
+    @Transactional(readOnly = true)
+    public List<Booking> getAllBookings() {
         return bookingRepository.findAll();
+    }
+
+    // Get by id
+    public Booking getBookingById(UUID bookingId) {
+        return bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new EntityNotFoundException("Booking not found with ID: " + bookingId));
+    }
+
+    // Define a method to update a booking
+    @Transactional
+    public Booking updateBooking(UUID bookingId, Booking updatedBooking) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new EntityNotFoundException("Booking not found with ID: " + bookingId));
+
+        // Update booking details with the provided values
+        booking.setUser(updatedBooking.getUser());
+        booking.setParkingSlot(updatedBooking.getParkingSlot());
+        booking.setBookingTime(updatedBooking.getBookingTime());
+
+        // Save the updated booking to the database
+        return bookingRepository.save(booking);
     }
 
 }
