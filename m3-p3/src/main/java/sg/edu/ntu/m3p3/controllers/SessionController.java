@@ -1,26 +1,30 @@
-package sg.edu.ntu.m3p3.controllers;
+package sg.edu.ntu.m3p3.Controllers;
 
-import java.util.List;
-import java.util.UUID;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import sg.edu.ntu.m3p3.entity.Session;
+//import sg.edu.ntu.m3p3.entity.User;
+import sg.edu.ntu.m3p3.entity.User.User;
 import sg.edu.ntu.m3p3.repository.BookingRepository;
 import sg.edu.ntu.m3p3.repository.SessionRepository;
 import sg.edu.ntu.m3p3.repository.UserRepository;
 import sg.edu.ntu.m3p3.service.SessionService;
+import sg.edu.ntu.m3p3.service.UserService;
+import sg.edu.ntu.m3p3.service.BookingService;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/sessions")
@@ -40,27 +44,8 @@ public class SessionController {
     }
 
     @Autowired
-    // private UserRepository userRepository;
-    // private SessionRepository sessionRepository;
-
-    // Endpoint to retrieve sessions for a specific user
-    /*
-     * @GetMapping("/users/{userId}/sessions")
-     * public ResponseEntity<List<Session>> getUserSessions(@PathVariable UUID
-     * userId) {
-     * // Retrieve sessions for the specified user ID
-     * List<Session> sessions = sessionService.getSessionsByUserId(userId);
-     * 
-     * // Check if sessions are found and return the response accordingly
-     * if (sessions.isEmpty()) {
-     * return ResponseEntity.notFound().build();
-     * } else {
-     * return ResponseEntity.ok(sessions);
-     * }
-     * }
-     */
-
-    // get all
+    // Ok
+    // Get all /sessions
     @GetMapping
     public ResponseEntity<List<Session>> getAllSession() {
         List<Session> sessions = sessionService.getAllSession();
@@ -73,84 +58,37 @@ public class SessionController {
         return ResponseEntity.ok(sessions);
     }
 
-    // FOR TESTING
-
+    // Ok
+    // End point /sessions/users/userid
     @PostMapping("/users/{userId}")
-    public ResponseEntity<Session> createSessionForUser(@PathVariable UUID userId, @RequestBody Session sessionData) {
+    public ResponseEntity<Map<String, String>> createSessionForUser(@PathVariable UUID userId,
+            @RequestBody Session sessionData) {
         Session session = sessionService.createSessionForUser(userId, sessionData);
-        return ResponseEntity.ok(session);
+        String message = "Session created successfully for user with ID: " + userId;
+        return ResponseEntity.ok(Collections.singletonMap("message", message));
+        // return ResponseEntity.ok(session);
     }
 
-    /*
-     * @PostMapping("/users/{userId}")
-     * public ResponseEntity<Session> createSessionForUser(@PathVariable UUID
-     * userId) {
-     * Session createdSession = sessionService.createSessionForUser(userId);
-     * return ResponseEntity.status(HttpStatus.CREATED).body(createdSession);
-     * }
-     */
-
-    /*
-     * @PostMapping("/users/{userId}/sessions")
-     * public ResponseEntity<Session> createSessionForUser(@PathVariable UUID
-     * userId) {
-     * Session createdSession = sessionService.createSessionForUser(userId);
-     * return ResponseEntity.status(HttpStatus.CREATED).body(createdSession);
-     * }
-     */
-    /*
-     * @PostMapping
-     * public ResponseEntity<Session> createSessionForUser(@PathVariable UUID
-     * userId, @RequestBody Session session) {
-     * User user = userRepository.findById(userId)
-     * .orElseThrow(() -> new EntityNotFoundException("User not found with id: " +
-     * userId));
-     * 
-     * // Call the service method to create a session for the user
-     * Session createdSession = sessionService.createSessionForUser(user, session);
-     * 
-     * // Return the created session in the response
-     * return ResponseEntity.status(HttpStatus.CREATED).body(createdSession);
-     * }
-     */
-
-    // All for session only
-    // post, with validation
-
-    /*
-     * @PostMapping
-     * public ResponseEntity<Session> createSession(@Valid @RequestBody Session
-     * session, BindingResult bindingResult) {
-     * logger.info("POST /session created");
-     * if (bindingResult.hasErrors()) {
-     * 
-     * return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-     * }
-     * 
-     * Session createdSession = sessionService.createSession(session);
-     * return ResponseEntity.status(HttpStatus.CREATED).body(createdSession);
-     * }
-     */
-
-    // get with id
-
+    // Get session with sessionId- ok
+    // End point- sessions/sessionId created
     @GetMapping("/{id}")
-    public ResponseEntity<Session> getSessionById(@PathVariable UUID id) {
-        Session session = sessionService.getSessionById(id);
-        logger.info("GET /session/{} called", id);
+    public ResponseEntity<Session> getSessionById(@PathVariable UUID userId) {
+        Session session = sessionService.getSessionById(userId);
+        logger.info("GET /session/{} called", userId);
         return ResponseEntity.ok(session);
         // return ResponseEntity.ok("GET /sessions/" + id + " ok");
     }
 
-    // update
-    @PutMapping("/{id}")
-    public ResponseEntity<Session> updateSession(@PathVariable UUID id, @RequestBody Session sessionDetails) {
-        Session updatedSession = sessionService.updateSession(id, sessionDetails);
-        logger.info("PUT /session/{} updated", id);
+    // Update not applicable
+    @PutMapping("/{userId}")
+    public ResponseEntity<Session> updateSession(@PathVariable UUID userId, @RequestBody Session sessionDetails) {
+        Session updatedSession = sessionService.updateSession(userId, sessionDetails);
+        logger.info("PUT /session/{} updated", userId);
         return ResponseEntity.ok(updatedSession);
     }
 
-    @DeleteMapping("/{id}")
+    // Session can not be deleted
+    @DeleteMapping("sessions/{id}")
     public ResponseEntity<String> deleteSession(@PathVariable UUID id) {
         sessionService.deleteSession(id);
         logger.info("DELETE /session/{} deleted", id);
