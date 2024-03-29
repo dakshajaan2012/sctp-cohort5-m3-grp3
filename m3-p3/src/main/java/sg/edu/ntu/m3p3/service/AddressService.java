@@ -27,4 +27,6 @@ public interface AddressService {
 	Optional<Address> getAddressByIdAndUserId(Long addressId, UUID userId);
 
 	List<Address> findUserFavoriteAddresses(UUID userId);
+
+	Address createAddressForUser(UUID userId, Address address);
 }

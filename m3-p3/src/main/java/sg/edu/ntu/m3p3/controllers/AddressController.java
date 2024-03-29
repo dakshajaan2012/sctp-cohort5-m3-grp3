@@ -4,15 +4,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import sg.edu.ntu.m3p3.entity.Address;
+import sg.edu.ntu.m3p3.exception.UserNotFoundException;
 import sg.edu.ntu.m3p3.service.AddressService;
 import sg.edu.ntu.m3p3.service.UserService;
 
@@ -23,18 +22,10 @@ public class AddressController {
 	private final AddressService addressService;
 	private final UserService userService;
 
-	private final Logger logger = LoggerFactory.getLogger(AddressController.class);
-
 	@Autowired
 	public AddressController(AddressService addressService, UserService userService) {
 		this.addressService = addressService;
 		this.userService = userService;
-	}
-
-	@PostMapping
-	public ResponseEntity<Address> createAddress(@RequestBody Address address) {
-		Address savedAddress = addressService.saveAddress(address);
-		return new ResponseEntity<>(savedAddress, HttpStatus.CREATED);
 	}
 
 	@GetMapping
@@ -118,5 +109,15 @@ public class AddressController {
 			return ResponseEntity.noContent().build();
 		}
 		return ResponseEntity.ok(favoriteAddresses);
+	}
+
+	@PostMapping
+	public ResponseEntity<Address> addAddressForUser(@RequestParam UUID userId, @RequestBody @Valid Address address) {
+		try {
+			Address savedAddress = addressService.createAddressForUser(userId, address);
+			return new ResponseEntity<>(savedAddress, HttpStatus.CREATED);
+		} catch (UserNotFoundException e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 }

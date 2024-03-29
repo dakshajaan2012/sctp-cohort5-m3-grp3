@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service;
 
 import jakarta.persistence.criteria.Predicate;
 import jakarta.transaction.Transactional;
-import sg.edu.ntu.m3p3.UserLogNotFoundException;
 import sg.edu.ntu.m3p3.entity.Session;
 import sg.edu.ntu.m3p3.entity.UserLog;
 import sg.edu.ntu.m3p3.entity.User.User;
 import sg.edu.ntu.m3p3.entity.User.UserBulkUpdateRequest;
+import sg.edu.ntu.m3p3.exception.UserLogNotFoundException;
 import sg.edu.ntu.m3p3.repository.AddressRepository;
 import sg.edu.ntu.m3p3.repository.FeatureUsageRepository;
 import sg.edu.ntu.m3p3.repository.SessionRepository;
