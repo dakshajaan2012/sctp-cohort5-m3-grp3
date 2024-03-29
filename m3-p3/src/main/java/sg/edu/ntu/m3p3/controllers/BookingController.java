@@ -1,38 +1,32 @@
 package sg.edu.ntu.m3p3.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
-import sg.edu.ntu.m3p3.entity.Session;
-//import sg.edu.ntu.m3p3.entity.User;
-import sg.edu.ntu.m3p3.entity.User.User;
-
-import sg.edu.ntu.m3p3.repository.SessionRepository;
-import sg.edu.ntu.m3p3.repository.UserRepository;
-import sg.edu.ntu.m3p3.service.SessionService;
-import sg.edu.ntu.m3p3.service.UserService;
 import java.util.List;
 import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import sg.edu.ntu.m3p3.entity.Booking;
 import sg.edu.ntu.m3p3.entity.ParkingSlot;
-
 import sg.edu.ntu.m3p3.repository.BookingRepository;
 import sg.edu.ntu.m3p3.repository.ParkingSlotRepository;
-
+import sg.edu.ntu.m3p3.repository.UserRepository;
 import sg.edu.ntu.m3p3.service.BookingService;
-import sg.edu.ntu.m3p3.service.ParkingSlotService;
 
 @RestController
+@Tag(name = "Booking", description = "Booking APIs")
 public class BookingController {
     private static final Logger logger = LoggerFactory.getLogger(BookingController.class);
 

@@ -3,24 +3,25 @@ package sg.edu.ntu.m3p3.controllers;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import sg.edu.ntu.m3p3.entity.Booking;
-import sg.edu.ntu.m3p3.entity.ParkingSlot;
-import sg.edu.ntu.m3p3.entity.Session;
-//import sg.edu.ntu.m3p3.entity.User;
-import sg.edu.ntu.m3p3.entity.User.User;
-import sg.edu.ntu.m3p3.repository.BookingRepository;
-import sg.edu.ntu.m3p3.repository.ParkingSlotRepository;
-import sg.edu.ntu.m3p3.repository.UserRepository;
-import sg.edu.ntu.m3p3.service.ParkingSlotService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+import sg.edu.ntu.m3p3.entity.ParkingSlot;
+import sg.edu.ntu.m3p3.repository.ParkingSlotRepository;
+import sg.edu.ntu.m3p3.service.ParkingSlotService;
 
 @RestController
+@Tag(name = "Parking Slot", description = "Parking Slot APIs")
 @RequestMapping("/slots")
 public class ParkingSlotController {
     private static final Logger logger = LoggerFactory.getLogger(ParkingSlotController.class);
