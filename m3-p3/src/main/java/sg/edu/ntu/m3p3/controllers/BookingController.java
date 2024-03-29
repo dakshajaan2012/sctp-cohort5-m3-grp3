@@ -26,7 +26,7 @@ import sg.edu.ntu.m3p3.repository.UserRepository;
 import sg.edu.ntu.m3p3.service.BookingService;
 
 @RestController
-@Tag(name = "Booking", description = "Booking APIs")
+@Tag(name = "6. Booking", description = "Booking APIs")
 public class BookingController {
     private static final Logger logger = LoggerFactory.getLogger(BookingController.class);
 

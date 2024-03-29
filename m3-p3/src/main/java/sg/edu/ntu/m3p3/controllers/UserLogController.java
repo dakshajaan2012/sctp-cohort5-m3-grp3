@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@Tag(name = "User Log", description = "Usesr Log APIs")
+@Tag(name = "3. User Log", description = "Usesr Log APIs")
 @RequestMapping("/user-logs")
 public class UserLogController {
     private static final Logger logger = LoggerFactory.getLogger(UserLogController.class);

@@ -18,7 +18,7 @@ import sg.edu.ntu.m3p3.service.FeatureUsageService;
 import sg.edu.ntu.m3p3.utils.ResponseUtil;
 import sg.edu.ntu.m3p3.utils.ResponseWrapper;
 
-@Tag(name = "Feature Usage", description = "Feature Usage APIs")
+@Tag(name = "8. Feature Usage", description = "Feature Usage APIs")
 @RestController
 @RequestMapping("/feature-usage")
 public class FeatureUsageController {

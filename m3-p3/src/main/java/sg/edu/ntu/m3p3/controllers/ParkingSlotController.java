@@ -21,7 +21,7 @@ import sg.edu.ntu.m3p3.repository.ParkingSlotRepository;
 import sg.edu.ntu.m3p3.service.ParkingSlotService;
 
 @RestController
-@Tag(name = "Parking Slot", description = "Parking Slot APIs")
+@Tag(name = "5. Parking Slot", description = "Parking Slot APIs")
 @RequestMapping("/slots")
 public class ParkingSlotController {
     private static final Logger logger = LoggerFactory.getLogger(ParkingSlotController.class);

@@ -26,7 +26,7 @@ import sg.edu.ntu.m3p3.service.AddressService;
 import sg.edu.ntu.m3p3.service.UserService;
 
 @RestController
-@Tag(name = "Address", description = "Address APIs")
+@Tag(name = "2. Address", description = "Address APIs")
 @RequestMapping("/addresses")
 @CrossOrigin
 public class AddressController {

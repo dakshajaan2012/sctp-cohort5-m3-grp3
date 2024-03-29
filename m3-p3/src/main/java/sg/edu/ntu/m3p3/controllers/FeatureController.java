@@ -19,7 +19,7 @@ import sg.edu.ntu.m3p3.service.FeatureService;
 import sg.edu.ntu.m3p3.utils.ResponseUtil;
 import sg.edu.ntu.m3p3.utils.ResponseWrapper;
 
-@Tag(name = "Feature", description = "Feature APIs")
+@Tag(name = "7. Feature", description = "Feature APIs")
 @RestController
 @RequestMapping("/feature")
 public class FeatureController {

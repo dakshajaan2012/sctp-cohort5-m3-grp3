@@ -22,7 +22,7 @@ import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Tag(name = "User", description = "User APIs")
+@Tag(name = "1. User", description = "User APIs")
 @RestController
 @RequestMapping("/user")
 public class UserController {
