@@ -2,13 +2,13 @@ package sg.edu.ntu.m3p3.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import sg.edu.ntu.m3p3.entity.Booking;
 import sg.edu.ntu.m3p3.entity.ParkingSlot;
-import sg.edu.ntu.m3p3.entity.Session;
 import sg.edu.ntu.m3p3.entity.User.User;
 import sg.edu.ntu.m3p3.repository.BookingRepository;
 import sg.edu.ntu.m3p3.repository.ParkingSlotRepository;
@@ -27,7 +27,7 @@ public class BookingService {
 
     // Make booking
 
-    public Booking bookSlot(Long userId, Long slotId) {
+    public Booking bookSlot(UUID userId, Long slotId) {
         // Retrieve user and parking slot from the database
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));

@@ -154,9 +154,8 @@ public class DataLoader {
 
 		Session session = new Session();
 		session.setUser(user);
-		session.setSessionName(sessionName);
-		session.setTimeStart(createdAt);
-		session.setTimeStop(timeStop);
+		session.setCreatedAt(createdAt);
+		session.setUpdatedAt(timeStop);
 		sessionRepository.save(session);
 	}
 

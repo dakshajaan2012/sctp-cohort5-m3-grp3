@@ -35,11 +35,12 @@ public class Session {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @Column(name = "session_id")
+    private UUID sessionId;
 
     // @ManyToOne()
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", unique = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", unique = false)
     @JsonIgnoreProperties("sessions")
     private User user;
 
@@ -130,8 +131,8 @@ public class Session {
         this.booking = booking;
     }
 
-    public Session(UUID id, User user, String firstName, String lastName, String userName, String activity) {
-        this.id = id;
+    public Session(UUID sessionId, User user, String firstName, String lastName, String userName, String activity) {
+        this.sessionId = sessionId;
         this.user = user;
         this.firstName = firstName;
         this.lastName = lastName;

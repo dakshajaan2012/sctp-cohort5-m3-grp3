@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.*;
+import sg.edu.ntu.m3p3.entity.User.User;
 
 @Data
 @Entity

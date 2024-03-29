@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import sg.edu.ntu.m3p3.entity.ParkingSlot;
 import sg.edu.ntu.m3p3.repository.ParkingSlotRepository;
 import sg.edu.ntu.m3p3.service.ParkingSlotService;
 
 @RestController
+@Tag(name = "Parking Slot", description = "Parking Slot APIs")
 @RequestMapping("/slots")
 public class ParkingSlotController {
     private static final Logger logger = LoggerFactory.getLogger(ParkingSlotController.class);
