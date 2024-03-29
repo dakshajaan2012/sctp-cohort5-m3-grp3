@@ -60,7 +60,7 @@ public class SessionController {
 
     // Ok
     // End point /sessions/users/userid
-    @Operation(summary = "Create Parking Slot", description = "Before calling this API, you have to:\n" +
+    @Operation(summary = "Create Session", description = "Before calling this API, you have to:\n" +
             "1. POST /slots - Create Parking Slot\n" +
             "2. GET /slot - Retrieve ParkingSlotId\n" +
             "3. POST /bookings - Create Booking\n" +

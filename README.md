@@ -56,6 +56,23 @@ This valuable understanding will inform our efforts to improve the website and i
 | PUT    | /sessions/{id} | Update a session by ID   |
 | DELETE | /sessions/{id} | Delete a session by ID   |
 
+## Parking Slot - Sunil
+
+| METHOD | ENDPOINT    | DESCRIPTION               |
+| ------ | ----------- | ------------------------- |
+| POST   | /slots      | Create a new parking slot |
+| GET    | /slots      | Get all parking slots     |
+| DELETE | /slots/{id} | Delete parking slot by ID |
+
+## Bookings - Sunil
+
+| METHOD | ENDPOINT              | DESCRIPTION          |
+| ------ | --------------------- | -------------------- |
+| GET    | /bookings             | Get all bookings     |
+| POST   | /bookings             | Create a new booking |
+| GET    | /bookings/{bookingId} | Get booking by ID    |
+| PUT    | /bookings/{bookingId} | Update booking       |
+
 ## Features - Melissa Koh
 
 | METHOD | ENDPOINT               | DESCRIPTION                              |
