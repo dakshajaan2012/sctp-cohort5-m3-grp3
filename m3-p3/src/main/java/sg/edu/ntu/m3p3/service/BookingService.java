@@ -5,18 +5,12 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import jakarta.persistence.EntityNotFoundException;
 import sg.edu.ntu.m3p3.entity.Booking;
 import sg.edu.ntu.m3p3.entity.ParkingSlot;
-import sg.edu.ntu.m3p3.entity.Session;
-//import sg.edu.ntu.m3p3.entity.User;
-import sg.edu.ntu.m3p3.entity.User.User;
 import sg.edu.ntu.m3p3.repository.BookingRepository;
 import sg.edu.ntu.m3p3.repository.ParkingSlotRepository;
 import sg.edu.ntu.m3p3.repository.UserRepository;

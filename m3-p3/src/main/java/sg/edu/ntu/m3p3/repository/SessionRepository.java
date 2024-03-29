@@ -26,4 +26,10 @@ public interface SessionRepository extends JpaRepository<Session, UUID> {
     @Query("SELECT b FROM Booking b WHERE b.user.userId = :userId")
     List<Booking> findByUserId(@Param("userId") UUID userId);
 
+    List<Session> findByUser_UserId(UUID userId);
+
+    void deleteByUser_UserId(UUID userId);
+
+    List<Session> findBySessionId(UUID sessionId);
+
 }

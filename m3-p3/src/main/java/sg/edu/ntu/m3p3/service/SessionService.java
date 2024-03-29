@@ -1,5 +1,8 @@
 package sg.edu.ntu.m3p3.service;
 
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,24 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.fasterxml.jackson.core.sym.Name;
-
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import sg.edu.ntu.m3p3.entity.Booking;
-import sg.edu.ntu.m3p3.entity.ParkingSlot;
 import sg.edu.ntu.m3p3.entity.Session;
-//import sg.edu.ntu.m3p3.entity.User;
-import sg.edu.ntu.m3p3.entity.User.User;
 import sg.edu.ntu.m3p3.repository.BookingRepository;
 import sg.edu.ntu.m3p3.repository.ParkingSlotRepository;
 import sg.edu.ntu.m3p3.repository.SessionRepository;
 import sg.edu.ntu.m3p3.repository.UserRepository;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
 
 @Service
 public class SessionService {
@@ -62,7 +55,7 @@ public class SessionService {
 
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
 
-        List<Booking> bookings = bookingRepository.findByUserId(userId);
+        List<Booking> bookings = bookingRepository.findByUser_UserId(userId);
 
         if (bookings.isEmpty()) {
             throw new EntityNotFoundException("Booking not found for user with id: " + userId);

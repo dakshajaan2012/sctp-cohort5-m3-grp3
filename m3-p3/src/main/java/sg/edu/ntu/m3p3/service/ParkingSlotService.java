@@ -1,7 +1,6 @@
 package sg.edu.ntu.m3p3.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,20 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import sg.edu.ntu.m3p3.entity.ParkingSlot;
-import sg.edu.ntu.m3p3.entity.Session;
-//import sg.edu.ntu.m3p3.entity.User;
-import sg.edu.ntu.m3p3.entity.User.User;
-import sg.edu.ntu.m3p3.repository.ParkingSlotRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import sg.edu.ntu.m3p3.entity.ParkingSlot;
 import sg.edu.ntu.m3p3.repository.ParkingSlotRepository;
 

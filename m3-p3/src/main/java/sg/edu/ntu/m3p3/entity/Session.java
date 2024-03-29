@@ -2,11 +2,24 @@ package sg.edu.ntu.m3p3.entity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
 //import jakarta.validation.constraints.NotEmpty;
 //import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import sg.edu.ntu.m3p3.entity.User.User;
 //import sg.edu.ntu.m3p3.entity.Booking;
 //import sg.edu.ntu.m3p3.entity.ParkingSlot;
@@ -16,13 +29,13 @@ import sg.edu.ntu.m3p3.entity.User.User;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "session")
+@Table(name = "sessions")
 public class Session {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "session_id") // Seems ok
-    private UUID id;
+    private UUID sessionId;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
