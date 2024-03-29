@@ -27,6 +27,7 @@ import sg.edu.ntu.m3p3.repository.UserRepository;
 import sg.edu.ntu.m3p3.service.SessionService;
 
 @RestController
+@Tag(name = "Session", description = "Session APIs")
 @RequestMapping("/sessions")
 public class SessionController {
     private static final Logger logger = LoggerFactory.getLogger(SessionController.class);
