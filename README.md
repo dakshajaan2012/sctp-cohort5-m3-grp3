@@ -9,7 +9,8 @@ Our central goal is to gain comprehensive insights into user behavior and engage
 By systematically logging various user activities, including sign-ups, logins, session durations, and interactions, we aim to refine our understanding of user requirements.
 This valuable understanding will inform our efforts to improve the website and introduce additional features prior to its public launch.
 
-![ERD](https://github.com/dakshajaan2012/sctp-cohort5-m3-grp3/assets/117299425/9ecbbd23-7f02-40a8-92e3-63435a7f9cb4)
+![ERD](https://github.com/dakshajaan2012/sctp-cohort5-m3-grp3/assets/117299425/9aa5a9d8-4d8c-442e-8e19-7375b2705a7e)
+
 
 # Explore REST APIs
 
