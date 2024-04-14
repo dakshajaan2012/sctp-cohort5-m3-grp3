@@ -68,12 +68,12 @@ public class SessionController {
             "4. POST /sessions/users/{userId} - Create Session")
 
     @PostMapping("/users/{userId}")
-    public ResponseEntity<Map<String, String>> createSessionForUser(@PathVariable UUID userId,
+    public ResponseEntity<Session> createSessionForUser(@PathVariable UUID userId,
             @RequestBody Session sessionData) {
         Session session = sessionService.createSessionForUser(userId, sessionData);
         String message = "Session created successfully for user with ID: " + userId;
-        return ResponseEntity.ok(Collections.singletonMap("message", message));
-        // return ResponseEntity.ok(session);
+        // return ResponseEntity.ok(Collections.singletonMap("message", message));
+        return ResponseEntity.ok(session);
     }
 
     // Get session with sessionId- ok

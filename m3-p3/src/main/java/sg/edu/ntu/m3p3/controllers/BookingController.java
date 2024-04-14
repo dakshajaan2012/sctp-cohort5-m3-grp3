@@ -63,7 +63,7 @@ public class BookingController {
     // http://localhost:8080/bookings?userId=1&slotId=2
     @Transactional
     @PostMapping("/bookings")
-    public String bookSlot(@RequestParam UUID userId, @RequestParam UUID slotId, UUID id) {
+    public String bookSlot(@RequestParam UUID userId, @RequestParam UUID slotId) {
         sg.edu.ntu.m3p3.entity.User.User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
 

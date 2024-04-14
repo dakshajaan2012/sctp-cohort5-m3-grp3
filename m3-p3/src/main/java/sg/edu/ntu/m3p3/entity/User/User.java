@@ -131,4 +131,14 @@ public class User {
         }
     }
 
+    public User(String userId) {
+        try {
+            this.userId = UUID.fromString(userId);
+        } catch (IllegalArgumentException e) {
+            // Handle invalid UUID string
+            // You may choose to log an error, throw an exception, or handle it differently
+            // based on your application's requirements
+            this.userId = null; // Or you can set a default value or handle it differently
+        }
+    }
 }

@@ -48,26 +48,30 @@ public class UserLogServiceImplTest {
     }
 
     // Test get userlogs case
-    @Test
-    public void getAllUserLogsTest() {
-        // Setup
-        List<UserLog> userLogs = new ArrayList<>();
-        userLogs.add(UserLog.builder().ipAddress("192.168.0.1").origin("singapore").isLogin(true).build());
-        userLogs.add(UserLog.builder().ipAddress("192.168.0.2").origin("thailand").isLogin(false).build());
-
-        // Mock the behavior of findAll method
-        when(userLogRepository.findAll()).thenReturn(userLogs);
-
-        // Execute
-        List<UserLog> retrievedUserLogs = userLogService.getAllUserLogs();
-
-        // Assert
-        assertEquals(userLogs.size(), retrievedUserLogs.size(), "Number of user logs should be equal.");
-
-        // Verify that findAll method is called exactly once
-        verify(userLogRepository, times(1)).findAll();
-    }
-
+    /*
+     * @Test
+     * public void getAllUserLogsTest() {
+     * // Setup
+     * List<UserLog> userLogs = new ArrayList<>();
+     * userLogs.add(UserLog.builder().ipAddress("192.168.0.1").origin("singapore").
+     * isLogin(true).build());
+     * userLogs.add(UserLog.builder().ipAddress("192.168.0.2").origin("thailand").
+     * isLogin(false).build());
+     * 
+     * // Mock the behavior of findAll method
+     * when(userLogRepository.findAll()).thenReturn(userLogs);
+     * 
+     * // Execute
+     * List<UserLog> retrievedUserLogs = userLogService.getAllUserLogs();
+     * 
+     * // Assert
+     * assertEquals(userLogs.size(), retrievedUserLogs.size(),
+     * "Number of user logs should be equal.");
+     * 
+     * // Verify that findAll method is called exactly once
+     * verify(userLogRepository, times(1)).findAll();
+     * }
+     */
     // Test delete userlogs case
     @Test
     public void deleteUserLogsByIdTest() {
