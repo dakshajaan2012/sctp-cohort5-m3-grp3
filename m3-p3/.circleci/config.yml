@@ -19,9 +19,9 @@ jobs:
             - checkout
             - setup_remote_docker      
             - docker/check
-            - run: docker build -t $myparkingappv1 .
+            - run: docker build -t $projectm4 .
             - snyk/scan: 
-                docker-image-name: $myparkingappv1
+                docker-image-name: $projectm4
 
   build:
     docker:
