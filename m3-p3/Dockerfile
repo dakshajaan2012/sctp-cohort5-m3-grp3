@@ -1,6 +1,6 @@
 
 
-# Use a base image with Java installed
+# Use a base image with Java installed_updated
 FROM openjdk:17-oracle
 
 # Set the working directory in the container

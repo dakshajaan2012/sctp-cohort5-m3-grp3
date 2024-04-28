@@ -1,6 +1,6 @@
 version: 2.1
 
-# Orbs - reusable packages for use
+# Orbs - reusable packages for use for trsting
 orbs:
   node: circleci/node@5.0.1
   docker: circleci/docker@2.1.4
