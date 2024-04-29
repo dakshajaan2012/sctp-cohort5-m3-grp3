@@ -5,25 +5,25 @@ orbs:
   docker: circleci/docker@2.1.4
   heroku: circleci/heroku@2.0.0
   snyk: snyk/snyk@1.5.0
+  java: circleci/openjdk@1.2.2
 
 jobs:
   scan:
     docker:
-      - image: cimg/node:16.10
+      - image: cimg/openjdk:17.0
     environment:
       IMAGE_NAME: dakshajaan/education-space
       SNYK_TOKEN: $SNYK_TOKEN
     steps:
       - checkout
-      - setup_remote_docker
-      - docker/check
-      - run: docker build -t $projectm4 .
-      - snyk/scan:
-          docker-image-name: $projectm4
+      - java/maven-install
+      - run:
+          name: Build Spring Boot project
+          command: mvn clean install
 
   build:
     docker:
-      - image: cimg/node:16.10
+      - image: cimg/openjdk:17.0
     steps:
       - checkout
       - node/install-packages:
@@ -32,16 +32,17 @@ jobs:
 
   test:
     docker:
-      - image: cimg/node:16.10
+      - image: cimg/openjdk:17.0
     steps:
       - checkout
       - node/install-packages:
           pkg-manager: npm
+          app-dir: /home/circleci/project # Set the app-dir parameter to the directory containing package.json
       - run: echo "Running tests..." && npm run test
 
   publish:
     docker:
-      - image: cimg/node:16.10
+      - image: cimg/openjdk:17.0
     steps:
       - setup_remote_docker
       - checkout
@@ -53,7 +54,7 @@ jobs:
 
   deploy:
     docker:
-      - image: cimg/node:16.10
+      - image: cimg/openjdk:17.0
     steps:
       - setup_remote_docker
       - heroku/install
