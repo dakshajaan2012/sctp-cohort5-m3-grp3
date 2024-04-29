@@ -1,11 +1,10 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@5.0.1
   docker: circleci/docker@2.1.4
   heroku: circleci/heroku@2.0.0
   snyk: snyk/snyk@1.5.0
-  java: circleci/openjdk@1.2.2
+  java: circleci/openjdk
 
 jobs:
   scan:
@@ -26,19 +25,18 @@ jobs:
       - image: cimg/openjdk:17.0
     steps:
       - checkout
-      - node/install-packages:
-          pkg-manager: npm
-      - run: echo "Installing dependencies..." && npm install
+      - run:
+          name: Build Spring Boot project
+          command: mvn clean install
 
   test:
     docker:
       - image: cimg/openjdk:17.0
     steps:
       - checkout
-      - node/install-packages:
-          pkg-manager: npm
-          app-dir: /home/circleci/project # Set the app-dir parameter to the directory containing package.json
-      - run: echo "Running tests..." && npm run test
+      - run:
+          name: Run tests for Spring Boot project
+          command: mvn test
 
   publish:
     docker:
