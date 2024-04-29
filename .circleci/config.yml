@@ -1,27 +1,25 @@
 version: 2.1
 
-# Orbs - reusable packages for use for trsting
 orbs:
   node: circleci/node@5.0.1
   docker: circleci/docker@2.1.4
   heroku: circleci/heroku@2.0.0
   snyk: snyk/snyk@1.5.0
 
-# Jobs - the set of instructions
 jobs:
-    scan:
-        docker:
-            - image: cimg/node:16.10
-        environment:
-            IMAGE_NAME: dakshajaan/education-space
-            SNYK_TOKEN: $SNYK_TOKEN
-        steps:
-            - checkout
-            - setup_remote_docker      
-            - docker/check
-            - run: docker build -t $projectm4 .
-            - snyk/scan: 
-                docker-image-name: $projectm4
+  scan:
+    docker:
+      - image: cimg/node:16.10
+    environment:
+      IMAGE_NAME: dakshajaan/education-space
+      SNYK_TOKEN: $SNYK_TOKEN
+    steps:
+      - checkout
+      - setup_remote_docker
+      - docker/check
+      - run: docker build -t $projectm4 .
+      - snyk/scan:
+          docker-image-name: $projectm4
 
   build:
     docker:
@@ -67,12 +65,10 @@ jobs:
             heroku container:push web -a dakshajaan-su-devops
             heroku container:release web -a dakshajaan-su-devops
 
-# Workflows
 workflows:
   version: 2
   cicd_flow:
     jobs:
-      # Run build and test jobs when main branch is updated
       - build:
           filters:
             branches:
@@ -83,24 +79,18 @@ workflows:
           filters:
             branches:
               only: main
-
-          # The scan job
       - scan:
           requires:
             - build
           filters:
             branches:
               only: main
-
-      # Run publish job when release branch is updated
       - publish:
           requires:
             - test
           filters:
             branches:
               only: release
-
-      # Optionally run deploy job when release branch is updated
       - deploy:
           requires:
             - test
