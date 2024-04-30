@@ -4,12 +4,11 @@ orbs:
   docker: circleci/docker@2.1.4
   heroku: circleci/heroku@2.0.0
   snyk: snyk/snyk@1.5.0
-  java: circleci/openjdk
 
 jobs:
   scan:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: openjdk:17-oracle
     environment:
       IMAGE_NAME: dakshajaan/education-space
       SNYK_TOKEN: $SNYK_TOKEN
@@ -22,7 +21,7 @@ jobs:
 
   build:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: openjdk:17-oracle
     steps:
       - checkout
       - run:
@@ -31,7 +30,7 @@ jobs:
 
   test:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: openjdk:17-oracle
     steps:
       - checkout
       - run:
@@ -40,7 +39,7 @@ jobs:
 
   publish:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: openjdk:17-oracle
     steps:
       - setup_remote_docker
       - checkout
@@ -52,7 +51,7 @@ jobs:
 
   deploy:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: openjdk:17-oracle
     steps:
       - setup_remote_docker
       - heroku/install
