@@ -8,7 +8,7 @@ orbs:
 jobs:
   scan:
     docker:
-      - image: openjdk:17-oracle
+      - image: dakshajaan/educational-space:projectg3m4
     environment:
       IMAGE_NAME: dakshajaan/education-space
       SNYK_TOKEN: $SNYK_TOKEN
@@ -24,7 +24,7 @@ jobs:
 
   build:
     docker:
-      - image: openjdk:17-oracle
+      - image: dakshajaan/educational-space:projectg3m4
     steps:
       - checkout
       - run:
@@ -33,7 +33,7 @@ jobs:
 
   test:
     docker:
-      - image: openjdk:17-oracle
+      - image: dakshajaan/educational-space:projectg3m4
     steps:
       - checkout
       - run:
@@ -42,19 +42,19 @@ jobs:
 
   publish:
     docker:
-      - image: openjdk:17-oracle
+      - image: dakshajaan/educational-space:projectg3m4
     steps:
       - setup_remote_docker
       - checkout
       - docker/check
       - docker/build:
-          image: dakshajaan/educational-space
+          image: dakshajaan/educational-space:projectg3m4
       - docker/push:
-          image: dakshajaan/educational-space
+          image: dakshajaan/educational-space:projectg3m4
 
   deploy:
     docker:
-      - image: openjdk:17-oracle
+      - image: dakshajaan/educational-space:projectg3m4
     steps:
       - setup_remote_docker
       - heroku/install
