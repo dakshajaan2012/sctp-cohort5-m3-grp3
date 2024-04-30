@@ -8,7 +8,7 @@ orbs:
 jobs:
   scan:
     docker:
-      - image: dakshajaan/educational-space:projectg3m4
+      - image: circleci/openjdk:17-jdk
     environment:
       SNYK_TOKEN: $SNYK_TOKEN
     steps:
@@ -23,7 +23,7 @@ jobs:
 
   build:
     docker:
-      - image: dakshajaan/educational-space:projectg3m4
+      - image: circleci/openjdk:17-jdk
     steps:
       - checkout
       - run:
@@ -32,7 +32,7 @@ jobs:
 
   test:
     docker:
-      - image: dakshajaan/educational-space:projectg3m4
+      - image: circleci/openjdk:17-jdk
     steps:
       - checkout
       - run:
@@ -41,19 +41,19 @@ jobs:
 
   publish:
     docker:
-      - image: dakshajaan/educational-space:projectg3m4
+      - image: circleci/openjdk:17-jdk
     steps:
       - setup_remote_docker
       - checkout
       - docker/check
       - docker/build:
-          image: dakshajaan/educational-space:projectg3m4
+          image: circleci/openjdk:17-jdk
       - docker/push:
-          image: dakshajaan/educational-space:projectg3m4
+          image: circleci/openjdk:17-jdk
 
   deploy:
     docker:
-      - image: dakshajaan/educational-space:projectg3m4
+      - image: circleci/openjdk:17-jdk
     steps:
       - setup_remote_docker
       - heroku/install
