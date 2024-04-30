@@ -2,13 +2,11 @@ version: 2.1
 
 orbs:
   docker: circleci/docker@2.1.4
-  heroku: circleci/heroku@2.0.0
-  snyk: snyk/snyk@1.5.0
 
 jobs:
   scan:
     docker:
-      - image: circleci/openjdk:17-jdk
+      - image: openjdk:17-oracle
     environment:
       SNYK_TOKEN: $SNYK_TOKEN
     steps:
@@ -21,79 +19,11 @@ jobs:
           name: Build Spring Boot project
           command: mvn clean install
 
-  build:
-    docker:
-      - image: circleci/openjdk:17-jdk
-    steps:
-      - checkout
-      - run:
-          name: Build Spring Boot project
-          command: mvn clean install
-
-  test:
-    docker:
-      - image: circleci/openjdk:17-jdk
-    steps:
-      - checkout
-      - run:
-          name: Run tests for Spring Boot project
-          command: mvn test
-
-  publish:
-    docker:
-      - image: circleci/openjdk:17-jdk
-    steps:
-      - setup_remote_docker
-      - checkout
-      - docker/check
-      - docker/build:
-          image: circleci/openjdk:17-jdk
-      - docker/push:
-          image: circleci/openjdk:17-jdk
-
-  deploy:
-    docker:
-      - image: circleci/openjdk:17-jdk
-    steps:
-      - setup_remote_docker
-      - heroku/install
-      - checkout
-      - run:
-          name: Heroku Container Push
-          command: |
-            heroku container:login
-            heroku container:push web -a dakshajaan-su-devops
-            heroku container:release web -a dakshajaan-su-devops
-
 workflows:
   version: 2
   cicd_flow:
     jobs:
-      - build:
-          filters:
-            branches:
-              only: main
-      - test:
-          requires:
-            - build
-          filters:
-            branches:
-              only: main
       - scan:
-          requires:
-            - build
           filters:
             branches:
               only: main
-      - publish:
-          requires:
-            - test
-          filters:
-            branches:
-              only: release
-      - deploy:
-          requires:
-            - test
-          filters:
-            branches:
-              only: release
