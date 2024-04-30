@@ -14,11 +14,11 @@ jobs:
       IMAGE_NAME: dakshajaan/education-space:projectg3m4
       SNYK_TOKEN: $SNYK_TOKEN
     steps:
-      - checkout
-      - java/maven-install # Using 'java/maven-install' command from the 'java' orb
       - run:
-          name: Build Spring Boot project
-          command: mvn clean install
+          name: Install Maven
+          command: |
+            apt-get update
+            apt-get install -y maven
 
   build:
     docker:
