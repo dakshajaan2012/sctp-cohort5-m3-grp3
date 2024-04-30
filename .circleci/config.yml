@@ -10,7 +10,6 @@ jobs:
     docker:
       - image: dakshajaan/educational-space:projectg3m4
     environment:
-      IMAGE_NAME: dakshajaan/education-space
       SNYK_TOKEN: $SNYK_TOKEN
     steps:
       - checkout
