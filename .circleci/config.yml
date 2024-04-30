@@ -4,7 +4,7 @@ orbs:
   docker: circleci/docker@2.1.4
   heroku: circleci/heroku@2.0.0
   snyk: snyk/snyk@1.5.0
-  java: circleci/openjdk@1.2.1
+  java: whoop/java-maven@2.0.33 # Updated to include the 'java' orb
 
 jobs:
   scan:
@@ -15,7 +15,7 @@ jobs:
       SNYK_TOKEN: $SNYK_TOKEN
     steps:
       - checkout
-      - java/maven-install
+      - java/maven-install # Using 'java/maven-install' command from the 'java' orb
       - run:
           name: Build Spring Boot project
           command: mvn clean install
