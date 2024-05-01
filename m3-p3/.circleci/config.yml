@@ -17,7 +17,7 @@ executors:
           POSTGRES_DB: cfd
 
 workflows:
-  cicd_flow:
+  my_cicd_flow:
     jobs:
       - maven/test:
           executor: openjdk11
