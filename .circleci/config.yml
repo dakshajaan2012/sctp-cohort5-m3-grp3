@@ -63,11 +63,11 @@ jobs:
           command: |
             wget https://dl.bintray.com/jeremy-long/owasp/dependency-check-7.0.0-release.zip
             unzip dependency-check-7.0.0-release.zip
-            export PATH=$PATH:/path/to/dependency-check/bin
+            export PATH=$PATH:C:\dependency-check-9.1.0-release\dependency-check\bin>
       - run:
           name: Run OWASP Dependency-Check
           command: |
-            dependency-check.sh --project "MyProject" --scan /path/to/your/project --format HTML --output /path/to/report
+            dependency-check.sh --project "MyProject" --scan C:\Users\daksh\SCTP\Spring-boot-parking-app\sctp-cohort5-m3-grp3 --format HTML --output /path/to/report
 
   deploy_heroku:
     docker:
