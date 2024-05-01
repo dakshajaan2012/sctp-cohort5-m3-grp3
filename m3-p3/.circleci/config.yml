@@ -1,0 +1,40 @@
+version: 2.1
+
+orbs:
+  docker: circleci/docker@2.1.4
+  heroku: circleci/heroku@2.0.0
+  snyk: snyk/snyk@1.5.0
+  maven: circleci/maven@1.3
+
+executors:
+  openjdk11:
+    docker:
+      - image: cimg/openjdk:11.0
+      - image: cimg/postgres:14.1
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 2024
+          POSTGRES_DB: cfd
+
+workflows:
+  cicd_flow:
+    jobs:
+      - maven/test:
+          executor: openjdk11
+          pre-steps:
+            - run:
+                name: Install dockerize
+                command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+                environment:
+                  DOCKERIZE_VERSION: v0.6.1
+            - run:
+                name: Wait for db
+                command: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+      - heroku/deploy-via-git:
+          force: true
+          requires:
+            - maven/test
+          filters:
+            branches:
+              only: master
