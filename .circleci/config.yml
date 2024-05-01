@@ -62,7 +62,7 @@ jobs:
           name: Download OWASP Dependency-Check
           command: |
             wget https://dl.bintray.com/jeremy-long/owasp/dependency-check-9.1.0-release.zip
-            unzip dependency-check-7.0.0-release.zip
+            unzip dependency-check-9.1.0-release.zip
             export PATH=$PATH:C:\dependency-check-9.1.0-release\dependency-check\bin>
       - run:
           name: Run OWASP Dependency-Check
