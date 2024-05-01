@@ -26,9 +26,9 @@ jobs:
       - run:
           name: Set up JDK 17
           command: |
-            export JAVA_HOME=C:\\Users\\daksh\\AppData\\Local\\Programs\\Eclipse Adoptium\\jdk-17.0.10.7-hotspot
-            echo 'export JAVA_HOME=C:\\Users\\daksh\\AppData\\Local\\Programs\\Eclipse Adoptium\\jdk-17.0.10.7-hotspot' >> $BASH_ENV
-            export PATH=$JAVA_HOME/bin:$PATH
+            export JAVA_HOME="/C/Users/daksh/AppData/Local/Programs/Eclipse Adoptium/jdk-17.0.10.7-hotspot"
+            echo "export JAVA_HOME=\"/C/Users/daksh/AppData/Local/Programs/Eclipse Adoptium/jdk-17.0.10.7-hotspot\"" >> $BASH_ENV
+            export PATH="$JAVA_HOME/bin:$PATH"
       - run:
           name: Build project
           command: mvn clean install
@@ -41,9 +41,9 @@ jobs:
       - run:
           name: Set up JDK 17
           command: |
-            export JAVA_HOME=C:\\Users\\daksh\\AppData\\Local\\Programs\\Eclipse Adoptium\\jdk-17.0.10.7-hotspot
-            echo 'export JAVA_HOME=C:\\Users\\daksh\\AppData\\Local\\Programs\\Eclipse Adoptium\\jdk-17.0.10.7-hotspot' >> $BASH_ENV
-            export PATH=$JAVA_HOME/bin:$PATH
+            export JAVA_HOME="/C/Users/daksh/AppData/Local/Programs/Eclipse Adoptium/jdk-17.0.10.7-hotspot"
+            echo "export JAVA_HOME=\"/C/Users/daksh/AppData/Local/Programs/Eclipse Adoptium/jdk-17.0.10.7-hotspot\"" >> $BASH_ENV
+            export PATH="$JAVA_HOME/bin:$PATH"
       - run:
           name: Run tests
           command: mvn test
@@ -56,9 +56,9 @@ jobs:
       - run:
           name: Set up JDK 17
           command: |
-            export JAVA_HOME=C:\\Users\\daksh\\AppData\\Local\\Programs\\Eclipse Adoptium\\jdk-17.0.10.7-hotspot
-            echo 'export JAVA_HOME=C:\\Users\\daksh\\AppData\\Local\\Programs\\Eclipse Adoptium\\jdk-17.0.10.7-hotspot' >> $BASH_ENV
-            export PATH=$JAVA_HOME/bin:$PATH
+            export JAVA_HOME="/C/Users/daksh/AppData/Local/Programs/Eclipse Adoptium/jdk-17.0.10.7-hotspot"
+            echo "export JAVA_HOME=\"/C/Users/daksh/AppData/Local/Programs/Eclipse Adoptium/jdk-17.0.10.7-hotspot\"" >> $BASH_ENV
+            export PATH="$JAVA_HOME/bin:$PATH"
       - run:
           name: Heroku Container Push
           command: |
