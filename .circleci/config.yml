@@ -63,8 +63,8 @@ jobs:
           name: Heroku Container Push
           command: |
             heroku container:login
-            heroku container:push web -a your-heroku-app
-            heroku container:release web -a your-heroku-app
+            heroku container:push web -a dakshajaan-su-devops
+            heroku container:release web -a dakshajaan-su-devops
 
 workflows:
   my_cicd_flow:
