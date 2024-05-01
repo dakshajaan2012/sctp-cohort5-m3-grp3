@@ -1,5 +1,7 @@
 version: 2.1
 
+version: 2.1
+
 orbs:
   docker: circleci/docker@2.1.4
   heroku: circleci/heroku@2.0.0
@@ -7,28 +9,21 @@ orbs:
   maven: circleci/maven@1.3
 
 executors:
-  openjdk17:
+  openjdk11:
     docker:
       - image: cimg/openjdk:17.0
+      - image: cimg/postgres:14.1
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 2024
+          POSTGRES_DB: cfd
 
 jobs:
-  my_job:
-    docker:
-      - image: cimg/openjdk:17.0 # Use any image that includes Java
-    steps:
-      - checkout
-
   build:
     docker:
       - image: cimg/openjdk:17.0
     steps:
       - checkout
-      - run:
-          name: Set up JDK 17
-          command: |
-            export JAVA_HOME=C:\\Users\\daksh\\AppData\\Local\\Programs\\Eclipse Adoptium\\jdk-17.0.10.7-hotspot
-            echo 'export JAVA_HOME=C:\\Users\\daksh\\AppData\\Local\\Programs\\Eclipse Adoptium\\jdk-17.0.10.7-hotspot' >> $BASH_ENV
-            export PATH=$JAVA_HOME/bin:$PATH
       - run:
           name: Build project
           command: mvn clean install
@@ -39,12 +34,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Set up JDK 17
-          command: |
-            export JAVA_HOME=C:\\Users\\daksh\\AppData\\Local\\Programs\\Eclipse Adoptium\\jdk-17.0.10.7-hotspot
-            echo 'export JAVA_HOME=C:\\Users\\daksh\\AppData\\Local\\Programs\\Eclipse Adoptium\\jdk-17.0.10.7-hotspot' >> $BASH_ENV
-            export PATH=$JAVA_HOME/bin:$PATH
-      - run:
           name: Run tests
           command: mvn test
 
@@ -53,12 +42,7 @@ jobs:
       - image: cimg/openjdk:17.0
     steps:
       - checkout
-      - run:
-          name: Set up JDK 17
-          command: |
-            export JAVA_HOME=C:\\Users\\daksh\\AppData\\Local\\Programs\\Eclipse Adoptium\\jdk-17.0.10.7-hotspot
-            echo 'export JAVA_HOME=C:\\Users\\daksh\\AppData\\Local\\Programs\\Eclipse Adoptium\\jdk-17.0.10.7-hotspot' >> $BASH_ENV
-            export PATH=$JAVA_HOME/bin:$PATH
+      - heroku/install
       - run:
           name: Heroku Container Push
           command: |
@@ -79,3 +63,5 @@ workflows:
           filters:
             branches:
               only: master
+
+
