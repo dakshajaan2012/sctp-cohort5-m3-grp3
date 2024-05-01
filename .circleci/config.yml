@@ -17,11 +17,22 @@ executors:
           POSTGRES_DB: cfd
 
 jobs:
+  my_job:
+    docker:
+      - image: cimg/openjdk:17.0 # Use any image that includes Java
+    steps:
+      - checkout
+
   build:
     docker:
       - image: cimg/openjdk:17.0
     steps:
       - checkout
+      - run:
+          name: Set up JDK 17
+          command: |
+            export JAVA_HOME=/C/Users/daksh/AppData/Local/Programs/Eclipse Adoptium/jdk-17.0.10.7-hotspot
+            export PATH=$JAVA_HOME/bin:$PATH
       - run:
           name: Build project
           command: mvn clean install
@@ -32,6 +43,11 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Set up JDK 17
+          command: |
+            export JAVA_HOME=/C/Users/daksh/AppData/Local/Programs/Eclipse Adoptium/jdk-17.0.10.7-hotspot
+            export PATH=$JAVA_HOME/bin:$PATH
+      - run:
           name: Run tests
           command: mvn test
 
@@ -40,7 +56,11 @@ jobs:
       - image: cimg/openjdk:17.0
     steps:
       - checkout
-      - heroku/install
+      - run:
+          name: Set up JDK 17
+          command: |
+            export JAVA_HOME=/C/Users/daksh/AppData/Local/Programs/Eclipse Adoptium/jdk-17.0.10.7-hotspot
+            export PATH=$JAVA_HOME/bin:$PATH
       - run:
           name: Heroku Container Push
           command: |
