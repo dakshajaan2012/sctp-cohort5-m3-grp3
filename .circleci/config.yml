@@ -59,10 +59,9 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Download OWASP Dependency-Check
+          name: Run OWASP Dependency-Check
+          command: cmd /c "C:\dependency-check-9.1.0-release\dependency-check\bin\dependency-check.bat" --project "MyProject" --scan "C:\Users\daksh\SCTP\Spring-boot-parking-app\sctp-cohort5-m3-grp3" --format HTML --output "C:\dependency-check-9.1.0-release"
 
-          command: |
-            C:\dependency-check-9.1.0-release\dependency-check\bin\dependency-check.bat --project "MyProject" --scan C:\Users\daksh\SCTP\Spring-boot-parking-app\sctp-cohort5-m3-grp3 --format HTML --output C:\dependency-check-9.1.0-release
   deploy_heroku:
     docker:
       - image: cimg/openjdk:17.0
