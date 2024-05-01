@@ -60,15 +60,9 @@ jobs:
       - checkout
       - run:
           name: Download OWASP Dependency-Check
-          command: |
-            wget https://dl.bintray.com/jeremy-long/owasp/dependency-check-9.1.0-release.zip
-            unzip dependency-check-9.1.0-release.zip
-            export PATH=$PATH:C:\dependency-check-9.1.0-release\dependency-check\bin>
-      - run:
-          name: Run OWASP Dependency-Check
-          command: |
-            dependency-check.sh --project "MyProject" --scan C:\Users\daksh\SCTP\Spring-boot-parking-app\sctp-cohort5-m3-grp3 --format HTML --output /path/to/report
 
+          command: |
+            C:\dependency-check-9.1.0-release\dependency-check\bin\dependency-check.bat --project "MyProject" --scan C:\Users\daksh\SCTP\Spring-boot-parking-app\sctp-cohort5-m3-grp3 --format HTML --output C:\dependency-check-9.1.0-release
   deploy_heroku:
     docker:
       - image: cimg/openjdk:17.0
