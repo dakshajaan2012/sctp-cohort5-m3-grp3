@@ -53,7 +53,7 @@ jobs:
           name: Run tests
           command: mvn test
 
-  deploy_heroku:
+  security_scan:
     docker:
       - image: cimg/openjdk:17.0
     steps:
@@ -64,12 +64,47 @@ jobs:
             export ADOPTIUM_JDK_HOME="/C/Users/daksh/AppData/Local/Programs/Eclipse Adoptium/jdk-17.0.10.7-hotspot"
             export JAVA_HOME="$ADOPTIUM_JDK_HOME"
             export PATH="$ADOPTIUM_JDK_HOME/bin:$PATH"
+      # Add steps to perform security vulnerability scanning
       - run:
-          name: Heroku Container Push
+          name: Install Snyk CLI
           command: |
-            heroku container:login
-            heroku container:push web -a dakshajaan-su-devops
-            heroku container:release web -a dakshajaan-su-devops
+            curl -sL https://snyk.io/install/cli | bash
+      - run:
+          name: Run Snyk security scan
+          command: snyk test
+
+  deploy:
+    docker:
+      - image: cimg/openjdk:17.0
+    steps:
+      - checkout
+      - run:
+          name: Set up JDK 17
+          command: |
+            export ADOPTIUM_JDK_HOME="/C/Users/daksh/AppData/Local/Programs/Eclipse Adoptium/jdk-17.0.10.7-hotspot"
+            export JAVA_HOME="$ADOPTIUM_JDK_HOME"
+            export PATH="$ADOPTIUM_JDK_HOME/bin:$PATH"
+      # Add deployment steps here
+      - run:
+        name: Heroku Container Push
+        command: |
+          heroku container:login
+          heroku container:push web -a dakshajaan-su-devops
+          heroku container:release web -a dakshajaan-su-devops
+
+  ci_flow:
+    docker:
+      - image: cimg/openjdk:17.0
+    steps:
+      - checkout
+      # Add CI steps for develop branch
+
+  cicd_flow:
+    docker:
+      - image: cimg/openjdk:17.0
+    steps:
+      - checkout
+      # Add CI/CD steps for release branch
 
 workflows:
   my_cicd_flow:
@@ -78,9 +113,20 @@ workflows:
       - test:
           requires:
             - build
+      - security_scan:
+          requires:
+            - build
       - deploy_heroku:
           requires:
             - test
           filters:
             branches:
               only: master
+      - ci_flow: # Add CI steps for develop branch
+          filters:
+            branches:
+              only: develop
+      - cicd_flow: # Add CI/CD steps for release branch
+          filters:
+            branches:
+              only: release
