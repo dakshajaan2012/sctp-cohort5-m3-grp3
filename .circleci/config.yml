@@ -64,7 +64,6 @@ jobs:
             export ADOPTIUM_JDK_HOME="/C/Users/daksh/AppData/Local/Programs/Eclipse Adoptium/jdk-17.0.10.7-hotspot"
             export JAVA_HOME="$ADOPTIUM_JDK_HOME"
             export PATH="$ADOPTIUM_JDK_HOME/bin:$PATH"
-      # Add steps to perform security vulnerability scanning
       - run:
           name: Install Snyk CLI
           command: |
@@ -73,7 +72,7 @@ jobs:
           name: Run Snyk security scan
           command: snyk test
 
-  deploy:
+  deploy_heroku:
     docker:
       - image: cimg/openjdk:17.0
     steps:
@@ -84,13 +83,12 @@ jobs:
             export ADOPTIUM_JDK_HOME="/C/Users/daksh/AppData/Local/Programs/Eclipse Adoptium/jdk-17.0.10.7-hotspot"
             export JAVA_HOME="$ADOPTIUM_JDK_HOME"
             export PATH="$ADOPTIUM_JDK_HOME/bin:$PATH"
-      # Add deployment steps here
       - run:
-        name: Heroku Container Push
-        command: |
-          heroku container:login
-          heroku container:push web -a dakshajaan-su-devops
-          heroku container:release web -a dakshajaan-su-devops
+          name: Heroku Container Push
+          command: |
+            heroku container:login
+            heroku container:push web -a dakshajaan-su-devops
+            heroku container:release web -a dakshajaan-su-devops
 
   ci_flow:
     docker:
@@ -98,6 +96,10 @@ jobs:
     steps:
       - checkout
       # Add CI steps for develop branch
+      - run:
+          name: CI steps for develop branch
+          command: |
+            # Add your CI steps here for the develop branch
 
   cicd_flow:
     docker:
@@ -105,6 +107,10 @@ jobs:
     steps:
       - checkout
       # Add CI/CD steps for release branch
+      - run:
+          name: CI/CD steps for release branch
+          command: |
+            # Add your CI/CD steps here for the release branch
 
 workflows:
   my_cicd_flow:
@@ -121,7 +127,7 @@ workflows:
             - test
           filters:
             branches:
-              only: master
+              only: main
       - ci_flow: # Add CI steps for develop branch
           filters:
             branches:
