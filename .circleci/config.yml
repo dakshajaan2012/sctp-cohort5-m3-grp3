@@ -12,6 +12,14 @@ executors:
       - image: cimg/openjdk:17.0
 
 jobs:
+  my_job:
+    docker:
+      - image: cimg/openjdk:17.0 # Use any image that includes Java
+    environment:
+      JAVA_HOME: /usr/local/openjdk-17 # Set the path to the Java installation directory
+    steps:
+      - checkout
+
   build:
     docker:
       - image: cimg/openjdk:17.0
