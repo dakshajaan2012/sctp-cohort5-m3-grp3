@@ -59,14 +59,15 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install Snyk CLI
+          name: Download OWASP Dependency-Check
           command: |
-            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-            sudo apt-get install -y nodejs
-            sudo npm install -g snyk
+            wget https://dl.bintray.com/jeremy-long/owasp/dependency-check-7.0.0-release.zip
+            unzip dependency-check-7.0.0-release.zip
+            export PATH=$PATH:/path/to/dependency-check/bin
       - run:
-          name: Run Snyk security scan
-          command: snyk test
+          name: Run OWASP Dependency-Check
+          command: |
+            dependency-check.sh --project "MyProject" --scan /path/to/your/project --format HTML --output /path/to/report
 
   deploy_heroku:
     docker:
