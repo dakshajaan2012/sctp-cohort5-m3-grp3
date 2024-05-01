@@ -54,14 +54,14 @@ jobs:
           command: mvn test
 
   security_scan:
-    docker:
-      - image: cimg/openjdk:17.0
-    steps:
-      - checkout
-      - run:
-          name: Run OWASP Dependency-Check
-          command: |
-            call C:\dependency-check-9.1.0-release\dependency-check\bin\dependency-check.bat --project "MyProject" --scan "C:\Users\daksh\SCTP\Spring-boot-parking-app\sctp-cohort5-m3-grp3" --format HTML --output "C:\dependency-check-9.1.0-release"
+  docker:
+    - image: cimg/openjdk:17.0
+  steps:
+    - checkout
+    - run:
+        name: Run OWASP Dependency-Check
+        command: |
+          C:\dependency-check-9.1.0-release\dependency-check\bin\dependency-check.bat --project "MyProject" --scan "C:\Users\daksh\SCTP\Spring-boot-parking-app\sctp-cohort5-m3-grp3" --format HTML --output "C:\dependency-check-9.1.0-release"
 
   deploy_heroku:
     docker:
