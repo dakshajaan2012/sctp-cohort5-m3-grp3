@@ -16,25 +16,48 @@ executors:
           POSTGRES_PASSWORD: 2024
           POSTGRES_DB: cfd
 
+jobs:
+  build:
+    docker:
+      - image: cimg/openjdk:11.0
+    steps:
+      - checkout
+      - run:
+          name: Build project
+          command: mvn clean install
+
+  test:
+    docker:
+      - image: cimg/openjdk:11.0
+    steps:
+      - checkout
+      - run:
+          name: Run tests
+          command: mvn test
+
+  deploy_heroku:
+    docker:
+      - image: cimg/openjdk:11.0
+    steps:
+      - checkout
+      - heroku/install
+      - run:
+          name: Heroku Container Push
+          command: |
+            heroku container:login
+            heroku container:push web -a your-heroku-app
+            heroku container:release web -a your-heroku-app
+
 workflows:
   my_cicd_flow:
     jobs:
-      - maven/test:
-          executor: openjdk11
-          pre-steps:
-            - run:
-                name: Install dockerize
-                command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
-                environment:
-                  DOCKERIZE_VERSION: v0.6.1
-            - run:
-                name: Wait for db
-                command: dockerize -wait tcp://localhost:5432 -timeout 1m
-
-      - heroku/deploy-via-git:
-          force: true
+      - build
+      - test:
           requires:
-            - maven/test
+            - build
+      - deploy_heroku:
+          requires:
+            - test
           filters:
             branches:
               only: master
