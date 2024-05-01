@@ -1,7 +1,5 @@
 version: 2.1
 
-version: 2.1
-
 orbs:
   docker: circleci/docker@2.1.4
   heroku: circleci/heroku@2.0.0
@@ -63,5 +61,3 @@ workflows:
           filters:
             branches:
               only: master
-
-
