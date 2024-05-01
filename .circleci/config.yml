@@ -16,93 +16,29 @@ executors:
           POSTGRES_PASSWORD: 2024
           POSTGRES_DB: cfd
 
-jobs:
-  scan:
-    docker:
-      - image: openjdk:17-oracle
-    environment:
-      IMAGE_NAME: dakshajaan/education-space:projectg3m4
-      SNYK_TOKEN: $SNYK_TOKEN
-    steps:
-      - run:
-          name: Install Maven
-          command: |
-            apt-get update
-            apt-get install -y maven
-
-  build:
-    docker:
-      - image: openjdk:17-oracle
-    steps:
-      - checkout
-      - run:
-          name: Build Spring Boot project
-          command: mvn clean install
-
-  test:
-    docker:
-      - image: openjdk:17-oracle
-    steps:
-      - checkout
-      - run:
-          name: Run tests for Spring Boot project
-          command: mvn test
-
-  publish:
-    docker:
-      - image: openjdk:17-oracle
-    steps:
-      - setup_remote_docker
-      - checkout
-      - docker/check
-      - docker/build:
-          image: dakshajaan/educational-space
-      - docker/push:
-          image: dakshajaan/educational-space
-
-  deploy:
-    docker:
-      - image: openjdk:17-oracle
-    steps:
-      - setup_remote_docker
-      - heroku/install
-      - checkout
-      - run:
-          name: Heroku Container Push
-          command: |
-            heroku container:login
-            heroku container:push web -a dakshajaan-su-devops
-            heroku container:release web -a dakshajaan-su-devops
-
 workflows:
-  version: 2
-  cicd_flow:
+  build-and-deploy: # This is the name of the workflow, feel free to change it to better match your workflow.
+    # Inside the workflow, you define the jobs you want to run.
+    # For more details on extending your workflow, see the configuration docs: https://circleci.com/docs/2.0/configuration-reference/#workflows
     jobs:
-      - build:
-          filters:
-            branches:
-              only: main
-      - test:
+      - maven/test:
+          executor: openjdk11
+          pre-steps:
+            - run:
+                name: Install dockerize
+                command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+                environment:
+                  DOCKERIZE_VERSION: v0.6.1
+            - run:
+                name: Wait for db
+                command: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+      - heroku/deploy-via-git:
+          force: true # this parameter instructs the push to use a force flag when pushing to the heroku remote, see: https://devcenter.heroku.com/articles/git
           requires:
-            - build
+            - build-and-test # only run deploy-via-git job if the build job has completed
           filters:
             branches:
-              only: main
-      - scan:
-          requires:
-            - build
-          filters:
-            branches:
-              only: main
-      - publish:
-          requires:
-            - test
-          filters:
-            branches:
-              only: release
-      - deploy:
-          requires:
-            - test
-          filters:
-            branches:
-              only: release
+              # This sample config runs this job on any branch matching the regex below, however, it's more likely you want to only run this job on master.
+              only: /.*-heroku-deploy/ # Delete this line
+              # only: master  # Uncomment this line
