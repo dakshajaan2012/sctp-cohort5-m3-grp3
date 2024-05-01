@@ -7,8 +7,8 @@ FROM openjdk:17-oracle
 WORKDIR /app
 
 # Copy the JAR file into the container
-COPY target/m3-p3-0.0.1-SNAPSHOT.jar /app
+COPY target/sctp-cohort5-m3-grp3-0.0.1-SNAPSHOT.jar /app
 
 
 # Specify the command to run your application
-CMD ["java", "-jar", "m3-p3-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "sctp-cohort5-m3-grp3-0.0.1-SNAPSHOT.jar"]
