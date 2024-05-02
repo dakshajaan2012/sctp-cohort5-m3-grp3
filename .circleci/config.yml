@@ -67,14 +67,10 @@ jobs:
             # Change directory to the location of dependency-check.bat
             #cd "/c/dependency-check-9.1.0-release/dependency-check/bin"
             #cd "C:\dependency-check-9.1.0-release\dependency-check\bin"
-            cd "/path/to/dependency-check-9.1.0-release/dependency-check/bin"
+            cd "C:\\dependency-check-9.1.0-release\\dependency-check\\bin"
 
             # Run dependency-check.bat using Wine (if installed) or directly using cmd.exe
-            if command -v wine &> /dev/null; then
-                wine cmd.exe /c dependency-check.bat --project "MyProject" --scan "/c/Users/daksh/SCTP/Spring-boot-parking-app/sctp-cohort5-m3-grp3" --format HTML --output "/c/dependency-check-9.1.0-release"
-            else
-                cmd.exe /c dependency-check.bat --project "MyProject" --scan "/c/Users/daksh/SCTP/Spring-boot-parking-app/sctp-cohort5-m3-grp3" --format HTML --output "/c/dependency-check-9.1.0-release"
-            fi
+            cmd.exe /c dependency-check.bat --project "MyProject" --scan "C:\\Users\\daksh\\SCTP\\Spring-boot-parking-app\\sctp-cohort5-m3-grp3" --format HTML --output "C:\\dependency-check-9.1.0-release"
 
   deploy_heroku:
     docker:
