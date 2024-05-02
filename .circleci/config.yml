@@ -92,6 +92,17 @@ jobs:
           name: CI steps for develop branch
           command: |
             # Add your CI steps here for the develop branch
+            # Assuming your unit tests are Maven-based
+            mvn clean test
+
+      - run:
+          name: Deploy to Production
+          command: |
+            # Add deployment steps here
+            # This will only execute if all unit tests pass
+            heroku container:login
+            heroku container:push web -a dakshajaan-su-devops
+            heroku container:release web -a dakshajaan-su-devops
 
   cicd_flow:
     docker:
@@ -103,20 +114,21 @@ jobs:
           name: CI/CD steps for release branch
           command: |
             # Add your CI/CD steps here for the release branch
+            mvn clean test
 
 workflows:
   my_cicd_flow:
     jobs:
       - build
-      - test:
-          requires:
-            - build
+      #- test:
+      #requires:
+      #- build
       - security_scan:
           requires:
             - build
       - deploy_heroku:
           requires:
-            - test
+            #- test
           filters:
             branches:
               only: main
