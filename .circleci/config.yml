@@ -65,7 +65,8 @@ jobs:
             #!/bin/bash -eo pipefail
 
             # Change directory to the location of dependency-check.bat
-            cd "/c/dependency-check-9.1.0-release/dependency-check/bin"
+            #cd "/c/dependency-check-9.1.0-release/dependency-check/bin"
+            cd "C:\dependency-check-9.1.0-release\dependency-check\bin"
 
             # Run dependency-check.bat using Wine (if installed) or directly using cmd.exe
             if command -v wine &> /dev/null; then
