@@ -69,7 +69,7 @@ jobs:
             #cd "/c/dependency-check-9.1.0-release/dependency-check/bin"
             #cd "C:\\dependency-check-9.1.0-release\\dependency-check\\bin"
             #cd "C:\\dependency-check-9.1.0-release\\dependency-check\\bin"
-            C:\dependency-check-9.1.0-release\dependency-check\bin\run
+            C:\Users\daksh\dependency-check-9.1.0-release\dependency-check\bin\run
 
 
             # Run dependency-check.bat using Wine (if installed) or directly using cmd.exe
