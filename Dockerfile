@@ -19,6 +19,8 @@ WORKDIR /app
 # Copy the Maven wrapper files and project description
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
+RUN apt-get update && apt-get install -y wine
+COPY dependency-check-9.1.0-release /app/dependency-check-9.1.0-release
 RUN chmod +x mvnw
 RUN ./mvnw dependency:go-offline
 
@@ -28,12 +30,9 @@ COPY src ./src
 # Build the application
 RUN ./mvnw install -DskipTests
 
-# Stage 2: Create the final image
-FROM openjdk:17-oracle
-WORKDIR /app
-
 # Copy the built JAR file from the previous stage
 COPY --from=build /app/target/sctp-cohort5-m3-grp3-0.0.1-SNAPSHOT.jar /app/sctp-cohort5-m3-grp3-0.0.1-SNAPSHOT.jar
 
-# Specify the command to run your application
-CMD ["java", "-jar", "sctp-cohort5-m3-grp3-0.0.1-SNAPSHOT.jar"]
+# Specify the command to run your application with OWASP Dependency-Check
+CMD ["/bin/sh", "-c", "/usr/bin/wine /app/dependency-check-9.1.0-release/dependency-check/bin/run && java -jar sctp-cohort5-m3-grp3-0.0.1-SNAPSHOT.jar"]
+
