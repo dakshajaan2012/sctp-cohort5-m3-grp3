@@ -77,7 +77,7 @@ workflows:
               only: develop, release
       - security_scan:
           requires:
-            - build
+            - maven/test
       - publish:
           requires:
             - maven/test
