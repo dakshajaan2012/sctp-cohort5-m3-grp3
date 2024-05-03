@@ -68,6 +68,18 @@ jobs:
             # Invoke the script with appropriate parameters
             #./dependency-check.sh --project "C:\Users\daksh\SCTP\Spring-boot-parking-app\sctp-cohort5-m3-grp3" --format HTML --out "C:\dependency-check-9.1.0-release"
 
+  publish:
+    docker:
+      - image: cimg/node:16.10
+    steps:
+      - setup_remote_docker
+      - checkout
+      - docker/check
+      - docker/build:
+          image: cimg/openjdk:17.0
+      - docker/push:
+          image: cimg/openjdk:17.0
+
   deploy_heroku:
     docker:
       - image: cimg/openjdk:17.0
@@ -126,6 +138,14 @@ workflows:
       - security_scan:
           requires:
             - build
+
+      - publish:
+          requires:
+          #- test
+          filters:
+            branches:
+              only: release
+
       - deploy_heroku:
           requires:
             #- test
