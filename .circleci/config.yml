@@ -17,12 +17,6 @@ executors:
           POSTGRES_DB: m3-p3
 
 jobs:
-  my_job:
-    docker:
-      - image: cimg/openjdk:17.0
-    steps:
-      - checkout
-
   build:
     docker:
       - image: cimg/openjdk:17.0
@@ -61,23 +55,9 @@ jobs:
       - run:
           name: Run OWASP Dependency-Check
           command: |
-            # Make the script executable
             chmod +x run.bat
-
             # Invoke the script with appropriate parameters
             #./dependency-check.sh --project "C:\Users\daksh\SCTP\Spring-boot-parking-app\sctp-cohort5-m3-grp3" --format HTML --out "C:\dependency-check-9.1.0-release"
-
-  publish:
-    docker:
-      - image: cimg/node:16.10
-    steps:
-      - setup_remote_docker
-      - checkout
-      - docker/check
-      - docker/build:
-          image: cimg/openjdk:17.0
-      - docker/push:
-          image: cimg/openjdk:17.0
 
   deploy_heroku:
     docker:
@@ -89,23 +69,21 @@ jobs:
       - run:
           name: Heroku Container Push
           command: |
-            heroku container:login                    # Log in to Heroku container registry
-            heroku container:push web -a dakshajaan/educational-space:project-g3-m4-su-devops  # Push Docker container to Heroku
-            heroku container:release web -a dakshajaan/educational-space:project-g3-m4-su-devops  # Release the container on Heroku
+            heroku container:login
+            heroku container:push web -a dakshajaan/educational-space:project-g3-m4-su-devops
+            heroku container:release web -a dakshajaan/educational-space:project-g3-m4-su-devops
 
   ci_flow:
     docker:
       - image: cimg/openjdk:17.0
     steps:
       - checkout
-      # Add CI steps for develop branch
       - run:
           name: CI steps for develop branch
           command: |
             # Add your CI steps here for the develop branch
             # Assuming your unit tests are Maven-based
             #mvn clean test
-
       - run:
           name: Deploy to Production
           command: |
@@ -120,7 +98,6 @@ jobs:
       - image: cimg/openjdk:17.0
     steps:
       - checkout
-      # Add CI/CD steps for release branch
       - run:
           name: CI/CD steps for release branch
           command: |
@@ -131,24 +108,20 @@ workflows:
   my_cicd_flow:
     jobs:
       - build
-      #- test:
-      #requires:
-      #- build
       - security_scan:
           requires:
             - build
-
       - deploy_heroku:
           requires:
-            #- test
+            - build
           filters:
             branches:
               only: main
-      - ci_flow: # Add CI steps for develop branch
+      - ci_flow:
           filters:
             branches:
               only: develop
-      - cicd_flow: # Add CI/CD steps for release branch
+      - cicd_flow:
           filters:
             branches:
               only: release
