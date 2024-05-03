@@ -124,7 +124,7 @@ workflows:
   my_cicd_flow:
     jobs:
       - build
-        - test:
+      - test:
           requires:
       - build
       - security_scan:
