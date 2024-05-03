@@ -1,26 +1,59 @@
 version: 2.1
 
 orbs:
-  maven: circleci/maven@1.3
   docker: circleci/docker@2.1.4
-  snyk: snyk/snyk@1.5.0
   heroku: circleci/heroku@2.0.0
+  snyk: snyk/snyk@1.5.0
+  maven: circleci/maven@1.3
+
+executors:
+  openjdk11:
+    docker:
+      - image: cimg/openjdk:17.0
+      - image: cimg/postgres:14.1
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 2024
+          POSTGRES_DB: cfd
 
 jobs:
-  deploy:
+  my_job:
     docker:
-      - image: cimg/node:16.10
+      - image: cimg/openjdk:17.0 # Use any image that includes Java
     steps:
-      - setup_remote_docker
-      - heroku/install
+      - checkout
+
+  build:
+    docker:
+      - image: cimg/openjdk:17.0
+    steps:
       - checkout
       - run:
-          name: Heroku Container Push
+          name: Set up JDK 17
           command: |
-            heroku container:login
-            heroku container:push web -a dakshajaan-su-devops
-            heroku container:release web -a dakshajaan-su-devops
+            export ADOPTIUM_JDK_HOME="/C/Users/daksh/AppData/Local/Programs/Eclipse Adoptium/jdk-17.0.10.7-hotspot"
+            export JAVA_HOME="$ADOPTIUM_JDK_HOME"
+            export PATH="$ADOPTIUM_JDK_HOME/bin:$PATH"
+      - run:
+          name: Build project
+          command: mvn clean install -Dmaven.test.failure.ignore=true
 
+  test:
+    docker:
+      - image: cimg/openjdk:17.0
+    steps:
+      - checkout
+      - run:
+          name: Set up JDK 17
+          command: |
+            export ADOPTIUM_JDK_HOME="/C/Users/daksh/AppData/Local/Programs/Eclipse Adoptium/jdk-17.0.10.7-hotspot"
+            export JAVA_HOME="$ADOPTIUM_JDK_HOME"
+            export PATH="$ADOPTIUM_JDK_HOME/bin:$PATH"
+      - run:
+          name: Run tests
+          command: mvn test
+
+  #security_scan:
   security_scan:
     docker:
       - image: cimg/openjdk:17.0
@@ -32,56 +65,79 @@ jobs:
             # Make the script executable
             chmod +x run.bat
 
-  publish:
-    executor: docker/docker
-    steps:
-      - checkout
-      - setup_remote_docker
-      - docker/check
-      - docker/build:
-          image: dakshajaan/educational-space:project-g3-m4
-          tag: v1.0.0
-      - docker/push:
-          image: dakshajaan/educational-space:project-g3-m4
-          tag: v1.0.0
+            # Invoke the script with appropriate parameters
+            #./dependency-check.sh --project "C:\Users\daksh\SCTP\Spring-boot-parking-app\sctp-cohort5-m3-grp3" --format HTML --out "C:\dependency-check-9.1.0-release"
 
-executors:
-  openjdk17:
+  deploy_heroku:
     docker:
       - image: cimg/openjdk:17.0
-      - image: cimg/postgres:15.6
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: 2024
-          POSTGRES_DB: demodb
+    #steps:
+    steps:
+      - setup_remote_docker
+      - heroku/install
+      - checkout
+      - run:
+          name: Heroku Container Push
+          command: |
+            heroku container:login
+            heroku container:push web -a dakshajaan-su-devops
+            heroku container:release web -a dakshajaan-su-devops
+
+  ci_flow:
+    docker:
+      - image: cimg/openjdk:17.0
+    steps:
+      - checkout
+      # Add CI steps for develop branch
+      - run:
+          name: CI steps for develop branch
+          command: |
+            # Add your CI steps here for the develop branch
+            # Assuming your unit tests are Maven-based
+            #mvn clean test
+
+      - run:
+          name: Deploy to Production
+          command: |
+            # Add deployment steps here
+            # This will only execute if all unit tests pass
+            heroku container:login
+            heroku container:push web -a project-g3-m4
+            heroku container:release web -project-g3-m4
+
+  cicd_flow:
+    docker:
+      - image: cimg/openjdk:17.0
+    steps:
+      - checkout
+      # Add CI/CD steps for release branch
+      - run:
+          name: CI/CD steps for release branch
+          command: |
+            # Add your CI/CD steps here for the release branch
+            #mvn clean test
 
 workflows:
-  version: 2
-  build-and-test:
+  my_cicd_flow:
     jobs:
-      - maven/test:
-          executor: openjdk17
-          pre-steps:
-            - run:
-                name: Install dockerize
-                command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
-                environment:
-                  DOCKERIZE_VERSION: v0.6.1
-            - run:
-                name: Wait for db
-                command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - build
+      #- test:
+      #requires:
+      #- build
       - security_scan:
-          #requires:
-          #- maven/test
-      - publish:
-          #requires:
-          #- maven/test
+          requires:
+            - build
+      - deploy_heroku:
+          requires:
+            #- test
           filters:
             branches:
-              only: develop, release
-      - deploy:
-          requires:
-            - publish
+              only: main
+      - ci_flow: # Add CI steps for develop branch
+          filters:
+            branches:
+              only: develop
+      - cicd_flow: # Add CI/CD steps for release branch
           filters:
             branches:
               only: release
