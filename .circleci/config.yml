@@ -56,22 +56,37 @@ executors:
           POSTGRES_DB: demodb
 
 workflows:
-  version: 2
-  build-and-test:
+  vesion: 2
+  build-and-test: # This is the name of the workflow, feel free to change it to better match your workflow.
+    # Inside the workflow, you define the jobs you want to run.
+    # For more details on extending your workflow, see the configuration docs: https://circleci.com/docs/2.0/configuration-reference/#workflows
     jobs:
-      - deploy:
+      - maven/test:
+          executor: openjdk17
+          pre-steps:
+            - run:
+                name: Install dockerize
+                command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+                environment:
+                  DOCKERIZE_VERSION: v0.6.1
+            - run:
+                name: Wait for db
+                command: dockerize -wait tcp://localhost:5432 -timeout 1m
           filters:
             branches:
-              only: release
+              only: develop, release
+      - security_scan
+          requires:
+            - build
       - publish:
           requires:
-            - deploy
+            - maven/test
           filters:
             branches:
-              only: release
-      - security_scan:
+              only: develop, release
+      - deploy:
           requires:
-            - deploy
+            - publish
           filters:
             branches:
               only: release
