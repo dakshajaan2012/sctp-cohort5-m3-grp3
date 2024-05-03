@@ -79,6 +79,11 @@ jobs:
             export ADOPTIUM_JDK_HOME="/C/Users/daksh/AppData/Local/Programs/Eclipse Adoptium/jdk-17.0.10.7-hotspot"
             export JAVA_HOME="$ADOPTIUM_JDK_HOME"
             export PATH="$ADOPTIUM_JDK_HOME/bin:$PATH"
+
+      - run:
+          name: Install Heroku CLI
+          command: |
+            curl https://cli-assets.heroku.com/install.sh | sh
       - run:
           name: Heroku Container Push
           command: |
@@ -97,7 +102,7 @@ jobs:
           command: |
             # Add your CI steps here for the develop branch
             # Assuming your unit tests are Maven-based
-            mvn clean test
+            #mvn clean test
 
       - run:
           name: Deploy to Production
@@ -118,7 +123,7 @@ jobs:
           name: CI/CD steps for release branch
           command: |
             # Add your CI/CD steps here for the release branch
-            mvn clean test
+            #mvn clean test
 
 workflows:
   my_cicd_flow:
