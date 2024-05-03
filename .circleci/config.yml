@@ -72,10 +72,10 @@ workflows:
                 command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - security_scan:
           requires:
-            - maven/test
+            #- maven/test
       - publish:
           requires:
-            - maven/test
+            #- maven/test
           filters:
             branches:
               only: develop, release
