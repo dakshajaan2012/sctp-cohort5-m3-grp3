@@ -14,7 +14,7 @@ executors:
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: 2024
-          POSTGRES_DB: cfd
+          POSTGRES_DB: m3-p3
 
 jobs:
   my_job:
