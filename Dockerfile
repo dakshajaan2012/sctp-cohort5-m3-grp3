@@ -33,8 +33,8 @@ RUN apt-get update && \
 #RUN chmod +x /app/dependency-check-9.1.0-release/dependency-check/bin/run
 
 # Build the application
-RUN ./mvnw dependency:go-offline && \
-    ./mvnw install -DskipTests
+#RUN ./mvnw dependency:go-offline && \
+RUN ./mvnw install -DskipTests
 
 # Copy the built JAR file
 COPY target/sctp-cohort5-m3-grp3-0.0.1-SNAPSHOT.jar /app/sctp-cohort5-m3-grp3-0.0.1-SNAPSHOT.jar

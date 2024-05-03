@@ -63,7 +63,7 @@ jobs:
           name: Run OWASP Dependency-Check
           command: |
             # Make the script executable
-            chmod +x run
+            chmod +x run.bat
 
             # Invoke the script with appropriate parameters
             #./dependency-check.sh --project "C:\Users\daksh\SCTP\Spring-boot-parking-app\sctp-cohort5-m3-grp3" --format HTML --out "C:\dependency-check-9.1.0-release"
