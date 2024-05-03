@@ -28,7 +28,7 @@ jobs:
     docker:
       - image: cimg/node:16.10
     environment:
-      IMAGE_NAME: dakshajaan/educational-space
+      IMAGE_NAME: dakshajaan/educational-space:project-g3-m4
       - checkout
       - setup_remote_docker
       - docker/check
@@ -43,10 +43,10 @@ jobs:
       - setup_remote_docker
       - docker/check
       - docker/build: #build the image
-          image: dakshajaan/educational-space
+          image: dakshajaan/educational-space:project-g3-m4
           tag: v1.0.0
       - docker/push: #pushes the image to the specified account in the environment
-          image: dakshajaan/educational-space
+          image: dakshajaan/educational-space:project-g3-m4
           tag: v1.0.0
 executors:
   openjdk17:
