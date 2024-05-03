@@ -53,7 +53,6 @@ jobs:
           name: Run tests
           command: mvn test
 
-  #security_scan:
   security_scan:
     docker:
       - image: cimg/openjdk:17.0
@@ -64,9 +63,6 @@ jobs:
           command: |
             # Make the script executable
             chmod +x run.bat
-
-            # Invoke the script with appropriate parameters
-            #./dependency-check.sh --project "C:\Users\daksh\SCTP\Spring-boot-parking-app\sctp-cohort5-m3-grp3" --format HTML --out "C:\dependency-check-9.1.0-release"
 
   publish:
     docker:
@@ -84,13 +80,13 @@ jobs:
     docker:
       - image: cimg/openjdk:17.0
     steps:
-      - setup_remote_docker # Set up Docker environment
-      - heroku/install # Install Heroku CLI
-      - checkout # Check out your code repository
+      - setup_remote_docker
+      - heroku/install
+      - checkout
       - run:
           name: Heroku Container Push
           command: |
-            heroku container:login                    # Log in to Heroku container registry
+            heroku container:login                   
             heroku container:push web -a project-g3-m4  # Push Docker container to Heroku
             heroku container:release web -a project-g3-m4  # Release the container on Heroku
 
@@ -99,7 +95,7 @@ jobs:
       - image: cimg/openjdk:17.0
     steps:
       - checkout
-      # Add CI steps for develop branch
+
       - run:
           name: CI steps for develop branch
           command: |
@@ -125,7 +121,7 @@ jobs:
       - run:
           name: CI/CD steps for release branch
           command: |
-            # Add your CI/CD steps here for the release branch
+
             #mvn clean test
 
 workflows:
