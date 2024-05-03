@@ -9,8 +9,8 @@ orbs:
 executors:
   openjdk11:
     docker:
-      #- image: cimg/openjdk:17.0
-      - image: dakshajaan/project-g3-m4
+      - image: cimg/openjdk:17.0
+      #- image: dakshajaan/project-g3-m4
       - image: cimg/postgres:14.11
         environment:
           POSTGRES_USER: postgres
