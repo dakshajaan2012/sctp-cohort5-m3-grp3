@@ -63,10 +63,10 @@ jobs:
           name: Run OWASP Dependency-Check
           command: |
             # Make the script executable
-            chmod +x dependency-check.sh
+            chmod +x run
 
             # Invoke the script with appropriate parameters
-            ./dependency-check.sh --project "C:\Users\daksh\SCTP\Spring-boot-parking-app\sctp-cohort5-m3-grp3" --format HTML --out "C:\dependency-check-9.1.0-release"
+            #./dependency-check.sh --project "C:\Users\daksh\SCTP\Spring-boot-parking-app\sctp-cohort5-m3-grp3" --format HTML --out "C:\dependency-check-9.1.0-release"
 
   deploy_heroku:
     docker:
