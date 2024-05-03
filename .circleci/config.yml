@@ -53,6 +53,7 @@ jobs:
           name: Run tests
           command: mvn test
 
+  #security_scan:
   security_scan:
     docker:
       - image: cimg/openjdk:17.0
