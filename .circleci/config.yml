@@ -22,7 +22,7 @@ jobs:
             heroku container:release web -a dakshajaan-su-devops
   security_scan:
     docker:
-      - image: cimg/openjdk:17.0.8
+      - image: cimg/openjdk:17.0
     steps:
       - checkout
       - run:
@@ -70,7 +70,9 @@ workflows:
           filters:
             branches:
               only: develop, release
-      - scan
+      - security_scan:
+          requires:
+            - build
       - publish:
           requires:
             - maven/test
