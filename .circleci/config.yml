@@ -10,7 +10,7 @@ executors:
   openjdk11:
     docker:
       - image: cimg/openjdk:17.0
-      - image: cimg/postgres:14.1
+      - image: cimg/postgres:14.11
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: 2024
