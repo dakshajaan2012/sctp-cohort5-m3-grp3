@@ -75,7 +75,7 @@ workflows:
           filters:
             branches:
               only: develop, release
-      - security_scan
+      - security_scan:
         #requires:
         #- build
       - publish:
