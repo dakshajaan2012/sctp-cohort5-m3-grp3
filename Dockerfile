@@ -20,21 +20,20 @@ WORKDIR /app
 # Copy the Maven wrapper files and project description
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
-RUN apt-get update && apt-get install -y wine
 
+# Install Wine and set permissions
+RUN apt-get update && \
+    apt-get install -y wine && \
+    chmod +x mvnw && \
+    chmod +x /app/dependency-check-9.1.0-release/dependency-check/bin/run
+
+# Copy the OWASP Dependency-Check files
 COPY dependency-check-9.1.0-release /app/dependency-check-9.1.0-release
-RUN chmod +x mvnw
-RUN ./mvnw dependency:go-offline
 
-# Copy the application source code
-COPY src ./src
-
-# Build the application
-RUN ./mvnw install -DskipTests
-
-# Copy the built JAR file from the previous stage
-COPY --from=build /app/target/sctp-cohort5-m3-grp3-0.0.1-SNAPSHOT.jar /app/sctp-cohort5-m3-grp3-0.0.1-SNAPSHOT.jar
+# Build the application and copy the built JAR
+RUN ./mvnw dependency:go-offline && \
+    ./mvnw install -DskipTests && \
+    cp target/sctp-cohort5-m3-grp3-0.0.1-SNAPSHOT.jar /app/sctp-cohort5-m3-grp3-0.0.1-SNAPSHOT.jar
 
 # Specify the command to run your application with OWASP Dependency-Check
 CMD ["/bin/sh", "-c", "/usr/bin/wine /app/dependency-check-9.1.0-release/dependency-check/bin/run && java -jar sctp-cohort5-m3-grp3-0.0.1-SNAPSHOT.jar"]
-
