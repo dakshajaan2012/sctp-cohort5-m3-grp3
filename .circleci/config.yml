@@ -79,8 +79,8 @@ jobs:
           name: Heroku Container Push
           command: |
             heroku container:login                    # Log in to Heroku container registry
-            heroku container:push web -a dakshajaan-su-devops  # Push Docker container to Heroku
-            heroku container:release web -a dakshajaan-su-devops  # Release the container on Heroku
+            heroku container:push web -a project-g3-m4  # Push Docker container to Heroku
+            heroku container:release web -a project-g3-m4  # Release the container on Heroku
 
   ci_flow:
     docker:
