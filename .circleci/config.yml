@@ -113,7 +113,7 @@ jobs:
             # This will only execute if all unit tests pass
             heroku container:login
             heroku container:push web -a project-g3-m4
-            heroku container:release web -project-g3-m4
+            heroku container:release web - a project-g3-m4
 
   cicd_flow:
     docker:
