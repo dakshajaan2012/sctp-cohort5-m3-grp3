@@ -22,7 +22,7 @@ jobs:
             heroku container:release web -a dakshajaan-su-devops
   security_scan:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:17.0.8
     steps:
       - checkout
       - run:
