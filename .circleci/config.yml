@@ -56,6 +56,7 @@ executors:
           POSTGRES_DB: demodb
 
 workflows:
+  version: 2
   build-and-test:
     jobs:
       - deploy:
