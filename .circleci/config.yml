@@ -71,17 +71,16 @@ jobs:
   deploy_heroku:
     docker:
       - image: cimg/openjdk:17.0
-    #steps:
     steps:
-      - setup_remote_docker
-      - heroku/install
-      - checkout
+      - setup_remote_docker # Set up Docker environment
+      - heroku/install # Install Heroku CLI
+      - checkout # Check out your code repository
       - run:
           name: Heroku Container Push
           command: |
-            heroku container:login
-            heroku container:push web -a dakshajaan-su-devops
-            heroku container:release web -a dakshajaan-su-devops
+            heroku container:login                    # Log in to Heroku container registry
+            heroku container:push web -a dakshajaan-su-devops  # Push Docker container to Heroku
+            heroku container:release web -a dakshajaan-su-devops  # Release the container on Heroku
 
   ci_flow:
     docker:
