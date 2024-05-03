@@ -57,9 +57,7 @@ executors:
 
 workflows:
   version: 2
-  build-and-test: # This is the name of the workflow, feel free to change it to better match your workflow.
-    # Inside the workflow, you define the jobs you want to run.
-    # For more details on extending your workflow, see the configuration docs: https://circleci.com/docs/2.0/configuration-reference/#workflows
+  build-and-test:
     jobs:
       - maven/test:
           executor: openjdk17
@@ -72,9 +70,6 @@ workflows:
             - run:
                 name: Wait for db
                 command: dockerize -wait tcp://localhost:5432 -timeout 1m
-          filters:
-            branches:
-              only: develop, release
       - security_scan:
           requires:
             - maven/test
