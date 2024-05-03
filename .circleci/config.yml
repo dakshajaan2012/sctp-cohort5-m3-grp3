@@ -62,20 +62,10 @@ jobs:
       - run:
           name: Run OWASP Dependency-Check
           command: |
-            wget <valid_download_url>
+            wget <https://dl.bintray.com/jeremy-long/owasp/dependency-check-9.1.0-release.zip>
             unzip dependency-check-9.1.0-release.zip
             cd dependency-check/bin
             ./dependency-check.sh --project "C:\Users\daksh\SCTP\Spring-boot-parking-app\sctp-cohort5-m3-grp3" --format HTML --out "C:\dependency-check-9.1.0-release"
-
-            #export WINE_PATH="/usr/bin/wine"
-            #$WINE_PATH C:/Users/daksh/dependency-check-9.1.0-release/dependency-check/bin/run
-            #cd /tmp
-            #wget https://dl.bintray.com/jeremy-long/owasp/dependency-check-9.1.0-release.zip
-            #wget <valid_download_url>
-            #unzip dependency-check-9.1.0-release.zip
-            #cd dependency-check/bin
-            #./dependency-check.sh --project "C:\Users\daksh\SCTP\Spring-boot-parking-app\sctp-cohort5-m3-grp3" --format HTML --out "C:\dependency-check-9.1.0-release"
-              #chmod +x C:/dependency-check-9.1.0-release/dependency-check/bin/run
 
   deploy_heroku:
     docker:
