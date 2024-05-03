@@ -71,11 +71,11 @@ workflows:
                 name: Wait for db
                 command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - security_scan:
-          requires:
-            #- maven/test
+          #requires:
+          #- maven/test
       - publish:
-          requires:
-            #- maven/test
+          #requires:
+          #- maven/test
           filters:
             branches:
               only: develop, release
