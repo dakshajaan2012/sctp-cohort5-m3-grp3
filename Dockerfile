@@ -27,10 +27,10 @@ RUN apt-get update && \
     chmod +x mvnw
 
 # Copy the OWASP Dependency-Check files
-COPY dependency-check-9.1.0-release /app/dependency-check-9.1.0-release
+#COPY dependency-check-9.1.0-release /app/dependency-check-9.1.0-release
 
 # Set permissions for the run script
-RUN chmod +x /app/dependency-check-9.1.0-release/dependency-check/bin/run
+#RUN chmod +x /app/dependency-check-9.1.0-release/dependency-check/bin/run
 
 # Build the application
 RUN ./mvnw dependency:go-offline && \
