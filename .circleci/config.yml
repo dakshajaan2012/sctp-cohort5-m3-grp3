@@ -62,7 +62,7 @@ jobs:
       - run:
           name: Run OWASP Dependency-Check
           command: |
-            wget <https://dl.bintray.com/jeremy-long/owasp/dependency-check-9.1.0-release.zip>
+            wget https://dl.bintray.com/jeremy-long/owasp/dependency-check-9.1.0-release.zip
             unzip dependency-check-9.1.0-release.zip
             cd dependency-check/bin
             ./dependency-check.sh --project "C:\Users\daksh\SCTP\Spring-boot-parking-app\sctp-cohort5-m3-grp3" --format HTML --out "C:\dependency-check-9.1.0-release"
