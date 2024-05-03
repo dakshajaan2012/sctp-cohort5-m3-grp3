@@ -90,8 +90,8 @@ jobs:
           name: Heroku Container Push
           command: |
             heroku container:login                    # Log in to Heroku container registry
-            heroku container:push web -a dakshajaan-su-devops  # Push Docker container to Heroku
-            heroku container:release web -a dakshajaan-su-devops  # Release the container on Heroku
+            heroku container:push web -a dakshajaan/educational-space:project-g3-m4-su-devops  # Push Docker container to Heroku
+            heroku container:release web -a dakshajaan/educational-space:project-g3-m4-su-devops  # Release the container on Heroku
 
   ci_flow:
     docker:
@@ -112,8 +112,8 @@ jobs:
             # Add deployment steps here
             # This will only execute if all unit tests pass
             heroku container:login
-            heroku container:push web -a dakshajaan-su-devops
-            heroku container:release web -a dakshajaan-su-devops
+            heroku container:push web -a dakshajaan/educational-space:project-g3-m4-su-devops
+            heroku container:release web -a dakshajaan/educational-space:project-g3-m4-su-devops
 
   cicd_flow:
     docker:
