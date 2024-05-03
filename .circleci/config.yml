@@ -9,7 +9,7 @@ orbs:
 executors:
   openjdk11:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:17.0.8
       - image: cimg/postgres:14.1
         environment:
           POSTGRES_USER: postgres
@@ -19,13 +19,13 @@ executors:
 jobs:
   my_job:
     docker:
-      - image: cimg/openjdk:17.0 # Use any image that includes Java
+      - image: cimg/openjdk:17.0.8 # Use any image that includes Java
     steps:
       - checkout
 
   build:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:17.0.8
     steps:
       - checkout
       - run:
@@ -40,7 +40,7 @@ jobs:
 
   test:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:17.0.8
     steps:
       - checkout
       - run:
@@ -56,7 +56,7 @@ jobs:
   #security_scan:
   security_scan:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:17.0.8
     steps:
       - checkout
       - run:
@@ -70,7 +70,7 @@ jobs:
 
   deploy_heroku:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:17.0.8
     steps:
       - checkout
       - run:
@@ -88,7 +88,7 @@ jobs:
 
   ci_flow:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:17.0.8
     steps:
       - checkout
       # Add CI steps for develop branch
@@ -110,7 +110,7 @@ jobs:
 
   cicd_flow:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:17.0.8
     steps:
       - checkout
       # Add CI/CD steps for release branch
