@@ -19,7 +19,7 @@ executors:
 jobs:
   my_job:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:17.0 # Use any image that includes Java
     steps:
       - checkout
 
@@ -53,6 +53,7 @@ jobs:
           name: Run tests
           command: mvn test
 
+  #security_scan:
   security_scan:
     docker:
       - image: cimg/openjdk:17.0
@@ -137,13 +138,6 @@ workflows:
       - security_scan:
           requires:
             - build
-
-      - publish:
-          requires:
-          #- test
-          filters:
-            branches:
-              only: release
 
       - deploy_heroku:
           requires:
