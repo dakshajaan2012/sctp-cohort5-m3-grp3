@@ -9,7 +9,8 @@ orbs:
 executors:
   openjdk11:
     docker:
-      - image: cimg/openjdk:17.0
+      #- image: cimg/openjdk:17.0
+      - image: dakshajaan/project-g3-m4
       - image: cimg/postgres:14.11
         environment:
           POSTGRES_USER: postgres
@@ -19,13 +20,14 @@ executors:
 jobs:
   my_job:
     docker:
-      - image: cimg/openjdk:17.0 # Use any image that includes Java
-    steps:
+      #- image: cimg/openjdk:17.0 # Use any image that includes Java
+      - image: dakshajaan/project-g3-m4
       - checkout
 
   build:
     docker:
-      - image: cimg/openjdk:17.0
+      #- image: cimg/openjdk:17.0
+      - image: dakshajaan/project-g3-m4
     steps:
       - checkout
       - run:
@@ -55,7 +57,8 @@ jobs:
 
   security_scan:
     docker:
-      - image: cimg/openjdk:17.0
+      #- image: cimg/openjdk:17.0
+      - image: dakshajaan/project-g3-m4
     steps:
       - checkout
       - run:
@@ -78,7 +81,8 @@ jobs:
 
   deploy_heroku:
     docker:
-      - image: cimg/openjdk:17.0
+      #- image: cimg/openjdk:17.0
+      - image: dakshajaan/project-g3-m4
     steps:
       - setup_remote_docker
       - heroku/install
@@ -92,7 +96,8 @@ jobs:
 
   ci_flow:
     docker:
-      - image: cimg/openjdk:17.0
+      #- image: cimg/openjdk:17.0
+      - image: dakshajaan/project-g3-m4
     steps:
       - checkout
 
@@ -114,7 +119,8 @@ jobs:
 
   cicd_flow:
     docker:
-      - image: cimg/openjdk:17.0
+      #- image: cimg/openjdk:17.0
+      - image: dakshajaan/project-g3-m4
     steps:
       - checkout
       # Add CI/CD steps for release branch
