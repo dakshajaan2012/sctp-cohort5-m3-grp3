@@ -138,13 +138,6 @@ workflows:
           requires:
             - build
 
-      - publish:
-          requires:
-          #- test
-          filters:
-            branches:
-              only: release
-
       - deploy_heroku:
           requires:
             #- test
