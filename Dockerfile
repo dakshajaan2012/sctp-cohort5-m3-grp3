@@ -13,13 +13,15 @@
 
 # new added
 # Stage 1: Build the application
-FROM openjdk:17-oracle AS build
+#FROM openjdk:17-oracle AS build
+FROM cimg/openjdk:17.0
 WORKDIR /app
 
 # Copy the Maven wrapper files and project description
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
 RUN apt-get update && apt-get install -y wine
+
 COPY dependency-check-9.1.0-release /app/dependency-check-9.1.0-release
 RUN chmod +x mvnw
 RUN ./mvnw dependency:go-offline
