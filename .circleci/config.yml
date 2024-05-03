@@ -63,7 +63,8 @@ jobs:
           command: |
 
             #export WINE_PATH="/usr/bin/wine"
-            $WINE_PATH C:/Users/daksh/dependency-check-9.1.0-release/dependency-check/bin/run
+            #$WINE_PATH C:/Users/daksh/dependency-check-9.1.0-release/dependency-check/bin/run
+            chmod +x C:/Users/daksh/dependency-check-9.1.0-release/dependency-check/bin/run
 
   deploy_heroku:
     docker:
