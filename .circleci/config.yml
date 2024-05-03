@@ -64,8 +64,8 @@ jobs:
 
             #export WINE_PATH="/usr/bin/wine"
             #$WINE_PATH C:/Users/daksh/dependency-check-9.1.0-release/dependency-check/bin/run
-            wget https://dl.bintray.com/jeremy-long/owasp/dependency-check-7.0.0-release.zip
-            unzip dependency-check-7.0.0-release.zip
+            C:/Users/daksh/download/dependency-check-9.1.0-release
+            unzip dependency-check-9.1.0-release.zip
             cd dependency-check/bin
             ./dependency-check.sh --project "C:\Users\daksh\SCTP\Spring-boot-parking-app\sctp-cohort5-m3-grp3" --format HTML --out "C:\dependency-check-9.1.0-release"
               #chmod +x C:/dependency-check-9.1.0-release/dependency-check/bin/run
