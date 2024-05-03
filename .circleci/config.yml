@@ -83,8 +83,8 @@ jobs:
           name: Heroku Container Push
           command: |
             heroku container:login
-            heroku container:push web -a project-g3-m4
-            heroku container:release web -a project-g3-m4
+            heroku container:push web -a sctp-cohort5-m3-grp3
+            heroku container:release web -a sctp-cohort5-m3-grp3
 
   ci_flow:
     docker:
@@ -105,8 +105,8 @@ jobs:
             # Add deployment steps here
             # This will only execute if all unit tests pass
             heroku container:login
-            heroku container:push web -a project-g3-m4
-            heroku container:release web -a project-g3-m4
+            heroku container:push web -a sctp-cohort5-m3-grp3
+            heroku container:release web -a sctp-cohort5-m3-grp3
 
   cicd_flow:
     docker:
