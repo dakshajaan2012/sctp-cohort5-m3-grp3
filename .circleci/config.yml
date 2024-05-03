@@ -20,19 +20,16 @@ jobs:
             heroku container:login
             heroku container:push web -a dakshajaan-su-devops
             heroku container:release web -a dakshajaan-su-devops
-  scan:
+  security_scan:
     docker:
-      - image: cimg/node:16.10
-    environment:
-      IMAGE_NAME: dakshajaan/educational-space:project-g3-m4
+      - image: cimg/openjdk:17.0
     steps:
       - checkout
-      - setup_remote_docker
-      - docker/check
-      - run: docker build -t $IMAGE_NAME .
-      - snyk/scan:
-          docker-image-name: $IMAGE_NAME
-          severity-threshold: critical
+      - run:
+          name: Run OWASP Dependency-Check
+          command: |
+            # Make the script executable
+            chmod +x run.bat
   publish:
     executor: docker/docker
     steps:
